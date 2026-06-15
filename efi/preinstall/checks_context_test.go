@@ -533,6 +533,78 @@ func (s *runChecksContextSuite) TestRunGoodActionProceedPermitInsufficientDMAPro
 	c.Assert(errs, HasLen, 0)
 }
 
+func (s *runChecksContextSuite) TestRunGoodActionProceedPermitNoHardwareRootOfTrust(c *C) {
+	// Test that ActionProceed enables PermitNoHardwareRootOfTrust.
+	meiAttrs := map[string][]byte{
+		"fw_ver": []byte(`0:16.1.27.2176
+0:16.1.27.2176
+0:16.0.15.1624
+`),
+		"fw_status": fwStatusManufacturingMode,
+	}
+	devices := []internal_efi.SysfsDevice{
+		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
+		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar1", nil, "iommu", nil, nil),
+		efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", meiAttrs, efitest.NewMockSysfsDevice(
+			"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
+		)),
+	}
+
+	errs := s.testRun(c, &testRunChecksContextRunParams{
+		env: efitest.NewMockHostEnvironmentWithOpts(
+			efitest.WithVirtMode(internal_efi.VirtModeNone, internal_efi.DetectVirtModeAll),
+			efitest.WithTPMDevice(newTpmDevice(tpm2_testutil.NewTransportBackedDevice(s.Transport, false, 1), nil, tpm2_device.ErrNoPPI)),
+			efitest.WithLog(efitest.NewLog(c, &efitest.LogOptions{Algorithms: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256}})),
+			efitest.WithAMD64Environment("GenuineIntel", 0x6, []uint64{cpuid.SDBG, cpuid.SMX}, 4, map[uint32]uint64{0x13a: (3 << 1), 0xc80: 0x40000000}),
+			efitest.WithSysfsDevices(devices...),
+			efitest.WithMockVars(efitest.MockVars{
+				{Name: "AuditMode", GUID: efi.GlobalVariable}:              &efitest.VarEntry{Attrs: efi.AttributeNonVolatile | efi.AttributeBootserviceAccess | efi.AttributeRuntimeAccess, Payload: []byte{0x0}},
+				{Name: "DeployedMode", GUID: efi.GlobalVariable}:           &efitest.VarEntry{Attrs: efi.AttributeNonVolatile | efi.AttributeBootserviceAccess | efi.AttributeRuntimeAccess, Payload: []byte{0x1}},
+				{Name: "SetupMode", GUID: efi.GlobalVariable}:              &efitest.VarEntry{Attrs: efi.AttributeBootserviceAccess | efi.AttributeRuntimeAccess, Payload: []byte{0x0}},
+				{Name: "OsIndicationsSupported", GUID: efi.GlobalVariable}: &efitest.VarEntry{Attrs: efi.AttributeBootserviceAccess | efi.AttributeRuntimeAccess, Payload: []byte{0x41, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}},
+			}.SetSecureBoot(true).SetPK(c, efitest.NewSignatureListX509(c, snakeoilCert, efi.MakeGUID(0x03f66fa4, 0x5eee, 0x479c, 0xa408, [...]uint8{0xc4, 0xdc, 0x0a, 0x33, 0xfc, 0xde})))),
+		),
+		tpmPropertyModifiers: map[tpm2.Property]uint32{
+			tpm2.PropertyNVCountersMax:     0,
+			tpm2.PropertyPSFamilyIndicator: 1,
+			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
+		},
+		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		iterations:   2,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
+		checkIntermediateErrs: func(i int, errs []*WithKindAndActionsError) {
+			switch i {
+			case 0:
+				c.Assert(errs, HasLen, 1)
+				c.Check(errs[0], DeepEquals, NewWithKindAndActionsError(
+					ErrorKindNoHardwareRootOfTrust,
+					nil,
+					[]Action{ActionProceed},
+					errs[0].Unwrap(),
+				))
+			}
+		},
+		actions: []actionAndArgs{
+			{action: ActionNone},
+			{action: ActionProceed},
+		},
+		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
+		expectedUsedSecureBootCAs: []*X509CertificateID{NewX509CertificateID(testutil.ParseCertificate(c, msUefiCACert))},
+		expectedFlags:             NoPlatformConfigProfileSupport | NoDriversAndAppsConfigProfileSupport | NoBootManagerConfigProfileSupport,
+		expectedAcceptedErrors: map[ErrorKind]json.RawMessage{
+			ErrorKindNoHardwareRootOfTrust: nil,
+		},
+		expectedWarningsMatch: `4 errors detected:
+- encountered an error when checking Intel BootGuard configuration: no hardware root-of-trust properly configured: system is in manufacturing mode
+- error with platform config \(PCR1\) measurements: generating profiles for PCR 1 is not supported yet, see https://github.com/canonical/secboot/issues/322
+- error with drivers and apps config \(PCR3\) measurements: generating profiles for PCR 3 is not supported yet, see https://github.com/canonical/secboot/issues/341
+- error with boot manager config \(PCR5\) measurements: generating profiles for PCR 5 is not supported yet, see https://github.com/canonical/secboot/issues/323
+`,
+	})
+	c.Check(errs, HasLen, 0)
+}
+
 func (s *runChecksContextSuite) TestRunGoodPostInstall(c *C) {
 	// Test good post-install scenario on a fTPM, which skips some tests related to
 	// TPM ownership, lockout status and checking the number of available
@@ -4415,7 +4487,7 @@ func (s *runChecksContextSuite) TestRunBadHostSecurityErrorMissingMSR(c *C) {
 	c.Check(errors.Is(errs[0], MissingKernelModuleError("msr")), testutil.IsTrue)
 }
 
-func (s *runChecksContextSuite) TestRunBadHostSecurityError(c *C) {
+func (s *runChecksContextSuite) TestRunBadNoHardwareRootOfTrust(c *C) {
 	// Test the error case where we're running on an Intel based device
 	// and BootGuard is mis-configured.
 	meiAttrs := map[string][]byte{
@@ -4452,7 +4524,7 @@ func (s *runChecksContextSuite) TestRunBadHostSecurityError(c *C) {
 	})
 	c.Assert(errs, HasLen, 1)
 	c.Check(errs[0], ErrorMatches, `error with system security: encountered an error when checking Intel BootGuard configuration: no hardware root-of-trust properly configured: system is in manufacturing mode`)
-	c.Check(errs[0], DeepEquals, NewWithKindAndActionsError(ErrorKindHostSecurity, nil, []Action{ActionContactOEM}, errs[0].Unwrap()))
+	c.Check(errs[0], DeepEquals, NewWithKindAndActionsError(ErrorKindNoHardwareRootOfTrust, nil, []Action{ActionProceed}, errs[0].Unwrap()))
 }
 
 func (s *runChecksContextSuite) TestRunBadSHA1(c *C) {

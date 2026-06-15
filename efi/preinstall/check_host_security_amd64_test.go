@@ -143,6 +143,7 @@ func (s *hostSecurityAMD64Suite) TestCheckHostSecurityIntelErrMEI(c *C) {
 		"fw_status": fwStatusManufacturingMode,
 	}
 	devices := []internal_efi.SysfsDevice{
+		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
 		efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", meiAttrs, efitest.NewMockSysfsDevice(
 			"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
 		)),
@@ -151,12 +152,22 @@ func (s *hostSecurityAMD64Suite) TestCheckHostSecurityIntelErrMEI(c *C) {
 		efitest.WithSysfsDevices(devices...),
 		efitest.WithAMD64Environment("GenuineIntel", 0x6, nil, 0, nil),
 	)
-
-	_, err := CheckHostSecurity(env, nil)
+	log := efitest.NewLog(c, &efitest.LogOptions{})
+	_, err := CheckHostSecurity(env, log)
 	c.Check(err, ErrorMatches, `encountered an error when checking Intel BootGuard configuration: no hardware root-of-trust properly configured: system is in manufacturing mode`)
 
+	// Check that there is a NoHardwareRootOfTrustError
+	// While with go1.23 errors.As() can unwrap automatically, with go1.18 we need to unwrap manually.
 	var nhrotErr *NoHardwareRootOfTrustError
-	c.Check(errors.As(err, &nhrotErr), testutil.IsTrue)
+	var cErr CompoundError
+	c.Check(errors.As(err, &cErr), testutil.IsTrue)
+	foundNhrot := false
+	for _, e := range cErr.Unwrap() {
+		if errors.As(e, &nhrotErr) {
+			foundNhrot = true
+		}
+	}
+	c.Check(foundNhrot, testutil.IsTrue)
 	c.Check(nhrotErr, ErrorMatches, `no hardware root-of-trust properly configured: system is in manufacturing mode`)
 }
 
@@ -175,8 +186,18 @@ func (s *hostSecurityAMD64Suite) TestCheckHostSecurityAMDErrPSP(c *C) {
 	_, err := CheckHostSecurity(env, log)
 	c.Check(err, ErrorMatches, `encountered an error when checking the AMD PSP configuration: no hardware root-of-trust properly configured: PSP security reporting not available`)
 
+	// Check that there is a NoHardwareRootOfTrustError
+	// While with go1.23 errors.As() can unwrap automatically, with go1.18 we need to unwrap manually.
 	var nhrotErr *NoHardwareRootOfTrustError
-	c.Check(errors.As(err, &nhrotErr), testutil.IsTrue)
+	var cErr CompoundError
+	c.Check(errors.As(err, &cErr), testutil.IsTrue)
+	foundNhrot := false
+	for _, e := range cErr.Unwrap() {
+		if errors.As(e, &nhrotErr) {
+			foundNhrot = true
+		}
+	}
+	c.Check(foundNhrot, testutil.IsTrue)
 	c.Check(nhrotErr, ErrorMatches, `no hardware root-of-trust properly configured: PSP security reporting not available`)
 }
 
