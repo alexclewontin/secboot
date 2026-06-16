@@ -69,13 +69,7 @@ func (d *mockMEISysfsDevice) AttributeReader(attr string) (io.ReadCloser, error)
 
 func (s *hostSecurityIntelSuite) TestReadIntelHFSTSRegistersFromMEISysfs1(c *C) {
 	dev := &mockMEISysfsDevice{
-		fwStatus: []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		fwStatus: fwStatusBase,
 	}
 
 	regs, err := ReadIntelHFSTSRegistersFromMEISysfs(dev)
@@ -92,13 +86,7 @@ C7E003CB
 
 func (s *hostSecurityIntelSuite) TestReadIntelHFSTSRegistersFromMEISysfs2(c *C) {
 	dev := &mockMEISysfsDevice{
-		fwStatus: []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E0034B
-`),
+		fwStatus: fwStatusRegular,
 	}
 
 	regs, err := ReadIntelHFSTSRegistersFromMEISysfs(dev)
@@ -122,14 +110,7 @@ func (s *hostSecurityIntelSuite) TestReadIntelHFSTSRegistersFromMEISysfsErrNoAtt
 
 func (s *hostSecurityIntelSuite) TestReadIntelHFSTSRegistersFromMEISysfsErrTooMany(c *C) {
 	dev := &mockMEISysfsDevice{
-		fwStatus: []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-00000000
-`),
+		fwStatus: fwStatusTooMany,
 	}
 
 	_, err := ReadIntelHFSTSRegistersFromMEISysfs(dev)
@@ -138,13 +119,7 @@ C7E003CB
 
 func (s *hostSecurityIntelSuite) TestReadIntelHFSTSRegistersFromMEISysfsErrInvalidLineLen(c *C) {
 	dev := &mockMEISysfsDevice{
-		fwStatus: []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-7E003CB
-`),
+		fwStatus: fwStatusInvalidLineLen,
 	}
 
 	_, err := ReadIntelHFSTSRegistersFromMEISysfs(dev)
@@ -153,13 +128,7 @@ func (s *hostSecurityIntelSuite) TestReadIntelHFSTSRegistersFromMEISysfsErrInval
 
 func (s *hostSecurityIntelSuite) TestReadIntelHFSTSRegistersFromMEISysfsErrInvalidLine(c *C) {
 	dev := &mockMEISysfsDevice{
-		fwStatus: []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-G7E003CB
-`),
+		fwStatus: fwStatusInvalidLine,
 	}
 
 	_, err := ReadIntelHFSTSRegistersFromMEISysfs(dev)
@@ -168,12 +137,7 @@ G7E003CB
 
 func (s *hostSecurityIntelSuite) TestReadIntelHFSTSRegistersFromMEISysfsErrNotEnough(c *C) {
 	dev := &mockMEISysfsDevice{
-		fwStatus: []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-`),
+		fwStatus: fwStatusNotEnough,
 	}
 
 	_, err := ReadIntelHFSTSRegistersFromMEISysfs(dev)
@@ -265,13 +229,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardGoodFVMECSME
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -287,13 +245,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardGoodFVECSME1
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E002CB
-`),
+		"fw_status": fwStatusFVECSME11,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -309,13 +261,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardGoodFVMECSME
 0:18.0.5.2141
 0:18.0.5.2066
 `),
-		"fw_status": []byte(`A4000245
-09110500
-00000020
-00000000
-02F61F03
-40200000
-`),
+		"fw_status": fwStatusFVMECSME18,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -331,13 +277,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardGoodFVECSME1
 0:18.0.5.2141
 0:18.0.5.2066
 `),
-		"fw_status": []byte(`A4000245
-09110500
-00000020
-00000000
-02F21F03
-40200000
-`),
+		"fw_status": fwStatusFVECSME18,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -450,13 +390,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardNoMEDeviceAn
 
 func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrFwVer(c *C) {
 	attrs := map[string][]byte{
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -487,13 +421,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrUnsupport
 0:8.1.65.1586
 0:8.1.52.1496
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -510,13 +438,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrOperation
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94040245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusOperationModeOverrideJumper,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -533,13 +455,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrOperation
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94020245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusOperationModeDebug,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -556,13 +472,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrACMNotAct
 0:18.0.5.2141
 0:18.0.5.2066
 `),
-		"fw_status": []byte(`A4000245
-09110500
-00000020
-00000000
-02F61E02
-40200000
-`),
+		"fw_status": fwStatusACMNotActive,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -579,13 +489,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrACMNotDon
 0:18.0.5.2141
 0:18.0.5.2066
 `),
-		"fw_status": []byte(`A4000245
-09110500
-00000020
-00000000
-02F61E03
-40200000
-`),
+		"fw_status": fwStatusACMNotDone,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -602,13 +506,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrBootGuard
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-D7E003CB
-`),
+		"fw_status": fwStatusBootGuardDisable,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -625,13 +523,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrMfgModeCS
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000255
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusManufacturingMode,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -648,13 +540,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrFPFsNotLo
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-87E003CB
-`),
+		"fw_status": fwStatusFPFNotLockedCSME11,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -671,13 +557,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrNoManufLo
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7C003CB
-`),
+		"fw_status": fwStatusNoManufLockCSME11,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -694,13 +574,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrUnsupport
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E00002
-`),
+		"fw_status": fwStatusUnsupportedNoFVMECSME11,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -717,13 +591,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrUnsupport
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E0030A
-`),
+		"fw_status": fwStatusUnsupportedVMProfileCSME11,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -740,13 +608,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrInvalidPr
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E0024A
-`),
+		"fw_status": fwStatusInvalidProfileCSME11,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -763,13 +625,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrNoSPIProt
 0:18.0.5.2141
 0:18.0.5.2066
 `),
-		"fw_status": []byte(`A4000255
-09110500
-00000020
-00000000
-02F61F03
-40200000
-`),
+		"fw_status": fwStatusNoSPIProtectionCSME18,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -786,13 +642,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrFPFsNotLo
 0:18.0.5.2141
 0:18.0.5.2066
 `),
-		"fw_status": []byte(`A4000245
-09110500
-00000020
-00000000
-02F61F03
-00200000
-`),
+		"fw_status": fwStatusFPFNotLockedCSME18,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -809,13 +659,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrNoManufLo
 0:18.0.5.2141
 0:18.0.5.2066
 `),
-		"fw_status": []byte(`A4000245
-09110500
-00000020
-00000000
-02F61F03
-40000000
-`),
+		"fw_status": fwStatusNoManufLockCSME18,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -832,13 +676,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrInvalidPr
 0:18.0.5.2141
 0:18.0.5.2066
 `),
-		"fw_status": []byte(`A4000245
-09110500
-00000020
-00000000
-02F61F01
-40200000
-`),
+		"fw_status": fwStatusInvalidProfileCSME18,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -855,13 +693,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrUnsupport
 0:18.0.5.2141
 0:18.0.5.2066
 `),
-		"fw_status": []byte(`A4000245
-09110500
-00000020
-00000000
-02E21F03
-40200000
-`),
+		"fw_status": fwStatusNoFVMEProfileCSME18,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,
@@ -878,13 +710,7 @@ func (s *hostSecurityIntelSuite) TestCheckHostSecurityIntelBootGuardErrUnsupport
 0:18.0.5.2141
 0:18.0.5.2066
 `),
-		"fw_status": []byte(`A4000245
-09110500
-00000020
-00000000
-02EE1F03
-40200000
-`),
+		"fw_status": fwStatusUnsupportedVMProfileCSME18,
 	}
 	device := efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", attrs, efitest.NewMockSysfsDevice(
 		"/sys/devices/pci0000:00:16:0", map[string]string{"DRIVER": "mei_me"}, "pci", nil, nil,

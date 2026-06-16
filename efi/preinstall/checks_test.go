@@ -133,13 +133,7 @@ func (s *runChecksSuite) TestRunChecksGood(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -212,13 +206,7 @@ func (s *runChecksSuite) TestRunChecksGoodSHA384(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -291,13 +279,7 @@ func (s *runChecksSuite) TestRunChecksGoodSHA1(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -368,13 +350,7 @@ func (s *runChecksSuite) TestRunChecksGoodEmptySHA384(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -450,13 +426,7 @@ func (s *runChecksSuite) TestRunChecksGoodPostInstall(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -589,13 +559,7 @@ func (s *runChecksSuite) TestRunChecksGoodDiscreteTPMDetected(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -672,13 +636,7 @@ func (s *runChecksSuite) TestRunChecksGoodDiscreteTPMDetectedSL3(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -752,13 +710,7 @@ func (s *runChecksSuite) TestRunChecksGoodDiscreteTPMDetectedSL3NotProtected(c *
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -838,13 +790,7 @@ func (s *runChecksSuite) TestRunChecksGoodDiscreteTPMDetectedHCRTM(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -918,13 +864,7 @@ func (s *runChecksSuite) TestRunChecksGoodDiscreteTPMDetectedHCRTMLocality4NotPr
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1004,13 +944,7 @@ func (s *runChecksSuite) TestRunChecksGoodInvalidPCR0Value(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1090,13 +1024,7 @@ func (s *runChecksSuite) TestRunChecksGoodInvalidPCR0ValueWithDiscreteTPM(c *C) 
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1184,13 +1112,7 @@ func (s *runChecksSuite) TestRunChecksGoodInvalidPCR2Value(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1272,13 +1194,7 @@ func (s *runChecksSuite) TestRunChecksGoodInvalidPCR4Value(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1360,13 +1276,7 @@ func (s *runChecksSuite) TestRunChecksGoodInvalidPCR7Value(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1446,13 +1356,7 @@ func (s *runChecksSuite) TestRunChecksGoodAddonDriversPresent(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1557,13 +1461,7 @@ func (s *runChecksSuite) TestRunChecksGoodVARDriversPresentWithInvalidPCR2Value(
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1677,13 +1575,7 @@ func (s *runChecksSuite) TestRunChecksGoodSysPrepAppsPresent(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1807,13 +1699,7 @@ func (s *runChecksSuite) TestRunChecksGoodSysPrepAppsPresentWithInvalidPCR4Value
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1946,13 +1832,7 @@ func (s *runChecksSuite) TestRunChecksGoodAbsoluteActive(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2029,13 +1909,7 @@ func (s *runChecksSuite) TestRunChecksGoodAbsoluteActiveWithInvalidPCR4Value(c *
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2121,13 +1995,7 @@ func (s *runChecksSuite) TestRunChecksGoodNoBootManagerCodeProfileSupport(c *C) 
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2208,13 +2076,7 @@ func (s *runChecksSuite) TestRunChecksGoodPreOSSecureBootAuthByEnrolledDigests(c
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2323,13 +2185,7 @@ func (s *runChecksSuite) TestRunChecksGoodPreOSSecureBootAuthByEnrolledDigestsWi
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2447,13 +2303,7 @@ func (s *runChecksSuite) TestRunChecksGoodWeakSecureBootAlgs(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2565,13 +2415,7 @@ func (s *runChecksSuite) TestRunChecksGoodWeakSecureBootAlgsWithInvalidPCR7Value
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2692,13 +2536,7 @@ func (s *runChecksSuite) TestRunChecksGoodNoSecureBootPolicyProfileSupport(c *C)
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2774,13 +2612,7 @@ func (s *runChecksSuite) TestRunChecksGoodNoSecureBootDeployedMode(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2855,13 +2687,7 @@ func (s *runChecksSuite) TestRunChecksGoodTPMLockout(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2944,13 +2770,7 @@ func (s *runChecksSuite) TestRunChecksGoodPostInstallLockoutAvailabilityCheckSki
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3086,13 +2906,7 @@ func (s *runChecksSuite) TestRunChecksBadTPMOwnedHierarchiesAndLockedOut(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3285,13 +3099,7 @@ func (s *runChecksSuite) TestRunChecksBadNoHardwareRootOfTrustError(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000255
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusManufacturingMode,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3318,6 +3126,7 @@ C7E003CB
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		flags:        PermitNoPlatformConfigProfileSupport | PermitNoDriversAndAppsConfigProfileSupport | PermitNoBootManagerConfigProfileSupport,
 	})
+
 	c.Check(err, ErrorMatches, `error with system security: encountered an error when checking Intel BootGuard configuration: no hardware root-of-trust properly configured: system is in manufacturing mode`)
 
 	var hse *HostSecurityError
@@ -3364,13 +3173,7 @@ func (s *runChecksSuite) TestRunChecksBadHostSecurityMissingMSR(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3410,13 +3213,7 @@ func (s *runChecksSuite) TestRunChecksBadUEFIDebuggingEnabledAndNoKernelIOMMU(c 
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", meiAttrs, efitest.NewMockSysfsDevice(
@@ -3469,13 +3266,7 @@ func (s *runChecksSuite) TestRunChecksBadSHA1(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3538,13 +3329,7 @@ func (s *runChecksSuite) TestRunChecksBadMandatoryPCR1(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3606,13 +3391,7 @@ func (s *runChecksSuite) TestRunChecksBadMandatoryPCR3(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3674,13 +3453,7 @@ func (s *runChecksSuite) TestRunChecksBadMandatoryPCR5(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3742,13 +3515,7 @@ func (s *runChecksSuite) TestRunChecksBadAddonDriversPresent(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3839,13 +3606,7 @@ func (s *runChecksSuite) TestRunChecksBadSysPrepAppsPresent(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3955,13 +3716,7 @@ func (s *runChecksSuite) TestRunChecksBadAbsoluteActive(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4025,13 +3780,7 @@ func (s *runChecksSuite) TestRunChecksBadWeakSecureBootAlgs(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4100,13 +3849,7 @@ func (s *runChecksSuite) TestRunChecksBadPreOSSecureBootAuthByEnrolledDigests(c 
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4171,13 +3914,7 @@ func (s *runChecksSuite) TestRunChecksBadEFIVariableAccessError(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4236,13 +3973,7 @@ func (s *runChecksSuite) TestRunChecksBadNoBootManagerCodeProfileSupport(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4309,13 +4040,7 @@ func (s *runChecksSuite) TestRunChecksBadEFIVariableAccessErrorSetupMode(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4370,13 +4095,7 @@ func (s *runChecksSuite) TestRunChecksBadNoSecureBootPolicyProfileSupport(c *C) 
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4439,13 +4158,7 @@ func (s *runChecksSuite) TestRunChecksBadNoSecureBootPolicyProfileSupportNoDeplo
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4510,13 +4223,7 @@ func (s *runChecksSuite) TestRunChecksBadNoSecureBootPolicyProfileSupportSecureB
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4583,13 +4290,7 @@ func (s *runChecksSuite) TestRunChecksBadTPMHierarchiesOwnedAndNoSecureBootPolic
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4668,13 +4369,7 @@ func (s *runChecksSuite) TestRunChecksBadInsufficientDMAProtectionAndNoBootManag
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4753,13 +4448,7 @@ func (s *runChecksSuite) TestRunChecksBadInsufficientDMAProtectionAndNoKernelIOM
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", meiAttrs, efitest.NewMockSysfsDevice(
@@ -4835,13 +4524,7 @@ func (s *runChecksSuite) TestRunChecksAllowInsufficientDMAProtection(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", meiAttrs, efitest.NewMockSysfsDevice(
