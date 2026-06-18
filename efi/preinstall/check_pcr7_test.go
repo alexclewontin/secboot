@@ -123,7 +123,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesGoo
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		expectedFlags: SecureBootPolicyResultFlags(0),
 		expectedUsedAuthorities: []*X509CertificateID{
@@ -178,7 +178,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesGoo
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		expectedFlags: SecureBootPolicyResultFlags(0),
 		expectedUsedAuthorities: []*X509CertificateID{
@@ -208,7 +208,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesGoo
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		expectedFlags: SecureBootPreOSVerificationIncludesDigest,
 		expectedUsedAuthorities: []*X509CertificateID{
@@ -238,7 +238,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesGoo
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		expectedFlags: SecureBootIncludesWeakAlg | SecureBootPreOSVerificationIncludesDigest,
 		expectedUsedAuthorities: []*X509CertificateID{
@@ -267,7 +267,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesGoo
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		expectedFlags: SecureBootPolicyResultFlags(0),
 		expectedUsedAuthorities: []*X509CertificateID{
@@ -297,7 +297,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesGoo
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		expectedFlags: SecureBootPolicyResultFlags(0),
 		expectedUsedAuthorities: []*X509CertificateID{
@@ -326,7 +326,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesGoo
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		expectedFlags: SecureBootPolicyResultFlags(0),
 		expectedUsedAuthorities: []*X509CertificateID{
@@ -355,7 +355,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesGoo
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		expectedFlags: SecureBootPolicyResultFlags(0),
 		expectedUsedAuthorities: []*X509CertificateID{
@@ -379,7 +379,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesGoo
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		expectedFlags: SecureBootPolicyResultFlags(0),
 		expectedUsedAuthorities: []*X509CertificateID{
@@ -408,7 +408,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesWit
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		permitDMAProtectionDisabled: true,
 		expectedFlags:               SecureBootPolicyResultFlags(0),
@@ -438,7 +438,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesWit
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		permitDMAProtectionDisabled: true,
 		expectedFlags:               SecureBootPolicyResultFlags(0),
@@ -468,7 +468,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesWit
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		permitDMAProtectionDisabled: true,
 		expectedFlags:               SecureBootPolicyResultFlags(0),
@@ -495,7 +495,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesGoo
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		expectedFlags: SecureBootNoDeployedMode,
 		expectedUsedAuthorities: []*X509CertificateID{
@@ -545,7 +545,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesGoo
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		expectedFlags: SecureBootPolicyResultFlags(0),
 		expectedUsedAuthorities: []*X509CertificateID{
@@ -595,7 +595,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesGoo
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		expectedFlags: SecureBootPolicyResultFlags(0),
 		expectedUsedAuthorities: []*X509CertificateID{
@@ -645,7 +645,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesGoo
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		expectedFlags: SecureBootPolicyResultFlags(0),
 		expectedUsedAuthorities: []*X509CertificateID{
@@ -674,7 +674,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, Equals, ErrNoSecureBoot)
@@ -696,7 +696,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `generating secure boot profiles for systems with timestamp revocation \(dbt\) support is currently not supported`)
@@ -718,7 +718,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `generating secure boot profiles for systems with OS recovery support, which requires dbr support, is not supported`)
@@ -760,7 +760,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `unexpected EV_EFI_VARIABLE_DRIVER_CONFIG event: all expected secure boot variable have been measured`)
@@ -797,7 +797,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `invalid event data for EV_EFI_VARIABLE_DRIVER_CONFIG event: some error`)
@@ -841,7 +841,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `unexpected EV_EFI_VARIABLE_DRIVER_CONFIG event ordering \(expected db-d719b2cb-3d3a-4596-a3bc-dad00e67656f, got dbx-d719b2cb-3d3a-4596-a3bc-dad00e67656f\)`)
@@ -878,7 +878,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `event data inconsistent with measured digest for EV_EFI_VARIABLE_DRIVER_CONFIG event \(name:\"dbx\", GUID:d719b2cb-3d3a-4596-a3bc-dad00e67656f, expected digest:0x1963d580fcc0cede165e23837b55335eebe18750c0b795883386026ea071e3c6, measured digest:0x8c8d89cdf0f2de4a1e97d436d7f6a19c49ab55d33bdb81c27470d4140b3de220\)`)
@@ -916,7 +916,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `invalid event data for EV_EFI_VARIABLE_DRIVER_CONFIG event: SecureBoot value is not consistent with the current EFI variable value`)
@@ -941,7 +941,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `unexpected EV_EFI_ACTION event \"UEFI Debug Mode\" before config`)
@@ -983,7 +983,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `EV_EFI_VARIABLE_DRIVER_CONFIG events for some secure boot variables missing from log`)
@@ -1023,7 +1023,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `missing load event for initial boot loader`)
@@ -1081,7 +1081,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `cannot handle EV_EFI_VARIABLE_AUTHORITY event in OS-present phase: event is not from db \(got db-8be4df61-93ca-11d2-aa0d-00e098032b8c\)`)
@@ -1115,7 +1115,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `cannot handle EV_EFI_VARIABLE_AUTHORITY event in OS-present phase: event data inconsistent with TPM_ALG_SHA256 event digest \(log digest:0x8c8d89cdf0f2de4a1e97d436d7f6a19c49ab55d33bdb81c27470d4140b3de220, expected digest:0x4d4a8e2c74133bbdc01a16eaf2dbb5d575afeb36f5d8dfcf609ae043909e2ee9\)`)
@@ -1162,7 +1162,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `cannot handle EV_EFI_VARIABLE_AUTHORITY event in OS-present phase: digest 0x4d4a8e2c74133bbdc01a16eaf2dbb5d575afeb36f5d8dfcf609ae043909e2ee9 has been measured by the firmware already`)
@@ -1196,7 +1196,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `invalid event data for EV_EFI_BOOT_SERVICES_APPLICATION event: some error`)
@@ -1230,7 +1230,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `cannot handle EV_EFI_VARIABLE_AUTHORITY event in OS-present phase: event has wrong data format: some error`)
@@ -1255,7 +1255,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `unexpected EV_EFI_ACTION event \"DMA Protection Disabled\" whilst measuring config`)
@@ -1280,7 +1280,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `unexpected EV_EFI_ACTION event \"DMA Protection Disabled\" before config`)
@@ -1305,7 +1305,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `unexpected EV_EFI_ACTION event \"DMA Protection Disabled\" whilst measuring config`)
@@ -1330,7 +1330,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `unexpected EV_EFI_ACTION event \"DMA Protection Disabled\" whilst measuring verification`)
@@ -1352,7 +1352,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `cannot read SecureBoot variable: variable does not exist`)
@@ -1374,7 +1374,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `cannot compute secure boot mode: inconsistent secure boot mode: firmware indicates audit mode is enabled when not in setup mode`)
@@ -1395,7 +1395,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 	})
 	c.Check(err, ErrorMatches, `cannot read OsIndicationsSupported variable: variable does not exist`)
@@ -1459,7 +1459,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		expectedFlags: SecureBootPolicyResultFlags(0),
 		expectedUsedAuthorities: []*X509CertificateID{
@@ -1511,7 +1511,7 @@ func (s *pcr7Suite) TestCheckSecureBootPolicyMeasurementsAndObtainAuthoritiesBad
 			signatures: []*efi.WinCertificateAuthenticode{
 				efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 			},
-			digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+			digest: shimDigestDefault,
 		},
 		permitDMAProtectionDisabled: true,
 		expectedFlags:               SecureBootPolicyResultFlags(0),

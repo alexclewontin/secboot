@@ -76,9 +76,9 @@ func (s *pcr4Suite) TestCheckBootManagerCodeMeasurementsGoodSHA256(c *C) {
 		),
 		pcrAlg: tpm2.HashAlgorithmSHA256,
 		images: []secboot_efi.Image{
-			&mockImage{contents: []byte("mock shim executable"), digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7")},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
+			&mockImage{contents: []byte("mock shim executable"), digest: shimDigestDefault},
+			&mockImage{contents: []byte("mock grub executable"), digest: grubDigestDefault},
+			&mockImage{contents: []byte("mock kernel executable"), digest: kernelDigestDefault},
 		},
 		expectedResult: new(BootManagerCodeResult),
 	})
@@ -130,9 +130,9 @@ func (s *pcr4Suite) TestCheckBootManagerCodeMeasurementsGoodWithSysprepApp(c *C)
 		),
 		pcrAlg: tpm2.HashAlgorithmSHA256,
 		images: []secboot_efi.Image{
-			&mockImage{contents: []byte("mock shim executable"), digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7")},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
+			&mockImage{contents: []byte("mock shim executable"), digest: shimDigestDefault},
+			&mockImage{contents: []byte("mock grub executable"), digest: grubDigestDefault},
+			&mockImage{contents: []byte("mock kernel executable"), digest: kernelDigestDefault},
 		},
 		expectedResult: &BootManagerCodeResult{
 			SysprepApps: []*LoadedImageInfo{
@@ -247,9 +247,9 @@ func (s *pcr4Suite) TestCheckBootManagerCodeMeasurementsGoodWithAbsolutePreOS(c 
 		),
 		pcrAlg: tpm2.HashAlgorithmSHA256,
 		images: []secboot_efi.Image{
-			&mockImage{contents: []byte("mock shim executable"), digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7")},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
+			&mockImage{contents: []byte("mock shim executable"), digest: shimDigestDefault},
+			&mockImage{contents: []byte("mock grub executable"), digest: grubDigestDefault},
+			&mockImage{contents: []byte("mock kernel executable"), digest: kernelDigestDefault},
 		},
 		expectedResult: &BootManagerCodeResult{HasAbsolute: true},
 	})
@@ -268,9 +268,9 @@ func (s *pcr4Suite) TestCheckBootManagerCodeMeasurementsGoodWithAbsoluteOSPresen
 		),
 		pcrAlg: tpm2.HashAlgorithmSHA256,
 		images: []secboot_efi.Image{
-			&mockImage{contents: []byte("mock shim executable"), digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7")},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
+			&mockImage{contents: []byte("mock shim executable"), digest: shimDigestDefault},
+			&mockImage{contents: []byte("mock grub executable"), digest: grubDigestDefault},
+			&mockImage{contents: []byte("mock kernel executable"), digest: kernelDigestDefault},
 		},
 		expectedResult: &BootManagerCodeResult{HasAbsolute: true},
 	})
@@ -328,9 +328,9 @@ func (s *pcr4Suite) TestCheckBootManagerCodeMeasurementsGoodHPSystem(c *C) {
 		),
 		pcrAlg: tpm2.HashAlgorithmSHA256,
 		images: []secboot_efi.Image{
-			&mockImage{contents: []byte("mock shim executable"), digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7")},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
+			&mockImage{contents: []byte("mock shim executable"), digest: shimDigestDefault},
+			&mockImage{contents: []byte("mock grub executable"), digest: grubDigestDefault},
+			&mockImage{contents: []byte("mock kernel executable"), digest: kernelDigestDefault},
 		},
 		expectedResult: &BootManagerCodeResult{HasAbsolute: true},
 	})
@@ -349,9 +349,9 @@ func (s *pcr4Suite) TestCheckBootManagerCodeMeasurementsGoodWithoutCallingEFIApp
 		),
 		pcrAlg: tpm2.HashAlgorithmSHA256,
 		images: []secboot_efi.Image{
-			&mockImage{contents: []byte("mock shim executable"), digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7")},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
+			&mockImage{contents: []byte("mock shim executable"), digest: shimDigestDefault},
+			&mockImage{contents: []byte("mock grub executable"), digest: grubDigestDefault},
+			&mockImage{contents: []byte("mock kernel executable"), digest: kernelDigestDefault},
 		},
 		expectedResult: new(BootManagerCodeResult),
 	})
@@ -385,9 +385,9 @@ func (s *pcr4Suite) TestCheckBootManagerCodeMeasurementsGoodSkipOtherEventTypesI
 		),
 		pcrAlg: tpm2.HashAlgorithmSHA256,
 		images: []secboot_efi.Image{
-			&mockImage{contents: []byte("mock shim executable"), digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7")},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
+			&mockImage{contents: []byte("mock shim executable"), digest: shimDigestDefault},
+			&mockImage{contents: []byte("mock grub executable"), digest: grubDigestDefault},
+			&mockImage{contents: []byte("mock kernel executable"), digest: kernelDigestDefault},
 		},
 		expectedResult: new(BootManagerCodeResult),
 	})
@@ -429,7 +429,7 @@ func (s *pcr4Suite) TestCheckBootManagerCodeMeasurementsBadMissingImage(c *C) {
 		),
 		pcrAlg: tpm2.HashAlgorithmSHA256,
 		images: []secboot_efi.Image{
-			&mockImage{contents: []byte("mock shim executable"), digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7")},
+			&mockImage{contents: []byte("mock shim executable"), digest: shimDigestDefault},
 		},
 	})
 	c.Check(err, ErrorMatches, `cannot verify correctness of EV_EFI_BOOT_SERVICES_APPLICATION event digest: not enough images supplied`)
@@ -445,7 +445,7 @@ func (s *pcr4Suite) TestCheckBootManagerCodeMeasurementsBadSBLMeasuredFlatFileDi
 		),
 		pcrAlg: tpm2.HashAlgorithmSHA256,
 		images: []secboot_efi.Image{
-			&mockImage{contents: []byte("mock shim executable"), digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7")},
+			&mockImage{contents: []byte("mock shim executable"), digest: shimDigestDefault},
 			// We have to cheat a bit here because the digest is hardcoded in the test log. We set an invalid Authenticode digest for the mock image so the intial test
 			// fails and then have the following code digest the same string that produces the log digest ("mock grub executable"), to get a digest that matches what's in
 			// the log so the test thinks that the log contains the flat file digest.
@@ -464,7 +464,7 @@ func (s *pcr4Suite) TestCheckBootManagerCodeMeasurementsBadProvidedBootImages(c 
 		),
 		pcrAlg: tpm2.HashAlgorithmSHA256,
 		images: []secboot_efi.Image{
-			&mockImage{contents: []byte("mock shim executable"), digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7")},
+			&mockImage{contents: []byte("mock shim executable"), digest: shimDigestDefault},
 			// In this case, we provide an invalid Authenticode digest, and a payload that also subsequently produces the wrong file digest.
 			&mockImage{contents: []byte("foo"), digest: testutil.DecodeHexString(c, "80fd5a9364df79953369758a419f7cb167201cf580160b91f837aad455c55bcd")},
 		},
@@ -538,7 +538,7 @@ func (s *pcr4Suite) TestCheckBootManagerCodeMeasurementsBadUnexpectedTransitionT
 		),
 		pcrAlg: tpm2.HashAlgorithmSHA256,
 		images: []secboot_efi.Image{
-			&mockImage{contents: []byte("mock shim executable"), digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7")},
+			&mockImage{contents: []byte("mock shim executable"), digest: shimDigestDefault},
 		},
 	})
 	c.Check(err, ErrorMatches, `unexpected event type EV_EFI_ACTION: expecting transition from pre-OS to OS-present event`)
@@ -570,7 +570,7 @@ func (s *pcr4Suite) TestCheckBootManagerCodeMeasurementsBadUnexpectedFirstOSPres
 		),
 		pcrAlg: tpm2.HashAlgorithmSHA256,
 		images: []secboot_efi.Image{
-			&mockImage{contents: []byte("mock shim executable"), digest: testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7")},
+			&mockImage{contents: []byte("mock shim executable"), digest: shimDigestDefault},
 		},
 	})
 	c.Check(err, ErrorMatches, `unexpected OS-present log event type EV_IPL \(expected EV_EFI_BOOT_SERVICES_APPLICATION\)`)
