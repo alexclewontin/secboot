@@ -220,13 +220,7 @@ func (s *runChecksContextSuite) TestRunGood(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -255,18 +249,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:              efiImagesDefault(),
 		profileOpts:               PCRProfileOptionsDefault,
 		actions:                   []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
@@ -290,13 +274,7 @@ func (s *runChecksContextSuite) TestRunGoodSHA384(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -359,13 +337,7 @@ func (s *runChecksContextSuite) TestRunGoodSHA1FromInitialFlags(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -431,13 +403,7 @@ func (s *runChecksContextSuite) TestRunGoodPermitInsufficientDMAProtectionFromIn
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -469,19 +435,9 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		initialFlags: PermitInsufficientDMAProtection,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		initialFlags:              PermitInsufficientDMAProtection,
+		loadedImages:              efiImagesDefault(),
 		profileOpts:               PCRProfileOptionsDefault,
 		actions:                   []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
@@ -508,13 +464,7 @@ func (s *runChecksContextSuite) TestRunGoodActionProceedPermitInsufficientDMAPro
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -548,18 +498,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		checkIntermediateErrs: func(i int, errs []*WithKindAndActionsError) {
 			switch i {
 			case 0:
@@ -602,13 +542,7 @@ func (s *runChecksContextSuite) TestRunGoodPostInstall(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -638,19 +572,9 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		initialFlags: PostInstallChecks,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		initialFlags:              PostInstallChecks,
+		loadedImages:              efiImagesDefault(),
 		profileOpts:               PCRProfileOptionsDefault,
 		actions:                   []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
@@ -672,13 +596,7 @@ func (s *runChecksContextSuite) TestRunGoodPreAndPostInstall(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -708,18 +626,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:              efiImagesDefault(),
 		profileOpts:               PCRProfileOptionsDefault,
 		actions:                   []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
@@ -754,19 +662,9 @@ C7E003CB
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 			tpm2.PropertyPermanent:         uint32(tpm2.AttrLockoutAuthSet),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		initialFlags: PostInstallChecks,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		initialFlags:              PostInstallChecks,
+		loadedImages:              efiImagesDefault(),
 		profileOpts:               PCRProfileOptionsDefault,
 		actions:                   []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
@@ -790,13 +688,7 @@ func (s *runChecksContextSuite) TestRunGoodPermitVirtualMachineFromInitialFlags(
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -825,19 +717,9 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		initialFlags: PermitVirtualMachine,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		initialFlags:              PermitVirtualMachine,
+		loadedImages:              efiImagesDefault(),
 		profileOpts:               PCRProfileOptionsDefault,
 		actions:                   []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
@@ -863,13 +745,7 @@ func (s *runChecksContextSuite) TestRunGoodActionProceedPermitVirtualMachine(c *
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -900,18 +776,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		checkIntermediateErrs: func(i int, errs []*WithKindAndActionsError) {
 			switch i {
 			case 0:
@@ -952,13 +818,7 @@ func (s *runChecksContextSuite) TestRunGoodDiscreteTPMDetectedSL3(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -990,18 +850,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerNTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:              efiImagesDefault(),
 		profileOpts:               PCRProfileOptionsDefault,
 		actions:                   []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
@@ -1026,13 +876,7 @@ func (s *runChecksContextSuite) TestRunGoodDiscreteTPMDetectedHCRTM(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1064,18 +908,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerNTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:              efiImagesDefault(),
 		profileOpts:               PCRProfileOptionsDefault,
 		actions:                   []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
@@ -1101,13 +935,7 @@ func (s *runChecksContextSuite) TestRunGoodInvalidPCR0Value(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1137,18 +965,8 @@ C7E003CB
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(_ int) {
 			_, err := s.TPM.PCREvent(s.TPM.PCRHandleContext(0), []byte("foo"), nil)
 			c.Check(err, IsNil)
@@ -1183,13 +1001,7 @@ func (s *runChecksContextSuite) TestRunGoodInvalidPCR2ValueWhenOmittedFromPCRPro
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1219,18 +1031,8 @@ C7E003CB
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionTrustSecureBootAuthoritiesForAddonDrivers,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionTrustSecureBootAuthoritiesForAddonDrivers,
 		prepare: func(_ int) {
 			_, err := s.TPM.PCREvent(s.TPM.PCRHandleContext(2), []byte("foo"), nil)
 			c.Check(err, IsNil)
@@ -1265,13 +1067,7 @@ func (s *runChecksContextSuite) TestRunGoodInvalidPCR4ValueWhenOmittedFromPCRPro
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1301,18 +1097,8 @@ C7E003CB
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionTrustSecureBootAuthoritiesForBootCode,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionTrustSecureBootAuthoritiesForBootCode,
 		prepare: func(_ int) {
 			_, err := s.TPM.PCREvent(s.TPM.PCRHandleContext(4), []byte("foo"), nil)
 			c.Check(err, IsNil)
@@ -1343,13 +1129,7 @@ func (s *runChecksContextSuite) TestRunGoodAddonDriversPresentFromInitialFlags(c
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1381,19 +1161,9 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		initialFlags: PermitAddonDrivers,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		initialFlags:              PermitAddonDrivers,
+		loadedImages:              efiImagesDefault(),
 		profileOpts:               PCRProfileOptionsDefault,
 		actions:                   []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
@@ -1422,13 +1192,7 @@ func (s *runChecksContextSuite) TestRunGoodActionProceedPermitAddonDrivers(c *C)
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1462,18 +1226,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		checkIntermediateErrs: func(i int, errs []*WithKindAndActionsError) {
 			switch i {
 			case 0:
@@ -1546,13 +1300,7 @@ func (s *runChecksContextSuite) TestRunGoodSysPrepAppsPresentFromInitialFlags(c 
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1598,19 +1346,9 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		initialFlags: PermitSysPrepApplications,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		initialFlags:              PermitSysPrepApplications,
+		loadedImages:              efiImagesDefault(),
 		profileOpts:               PCRProfileOptionsDefault,
 		actions:                   []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
@@ -1637,13 +1375,7 @@ func (s *runChecksContextSuite) TestRunGoodActionProceedPermitSysPrepApplication
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1691,18 +1423,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		actions: []actionAndArgs{
 			{action: ActionNone},
 			{action: ActionProceed},
@@ -1780,13 +1502,7 @@ func (s *runChecksContextSuite) TestRunGoodAbsoluteActiveFromInitialFlags(c *C) 
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1818,21 +1534,11 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		profileOpts:  PCRProfileOptionsDefault,
-		actions:      []actionAndArgs{{action: ActionNone}},
-		initialFlags: PermitAbsoluteComputrace,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		profileOpts:               PCRProfileOptionsDefault,
+		actions:                   []actionAndArgs{{action: ActionNone}},
+		initialFlags:              PermitAbsoluteComputrace,
+		loadedImages:              efiImagesDefault(),
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
 		expectedUsedSecureBootCAs: []*X509CertificateID{NewX509CertificateID(testutil.ParseCertificate(c, msUefiCACert))},
 		expectedFlags:             NoPlatformConfigProfileSupport | NoDriversAndAppsConfigProfileSupport | NoBootManagerConfigProfileSupport,
@@ -1856,13 +1562,7 @@ func (s *runChecksContextSuite) TestRunGoodActionProceedPermitAbsolute(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1913,17 +1613,7 @@ C7E003CB
 				))
 			}
 		},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		loadedImages:              efiImagesDefault(),
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
 		expectedUsedSecureBootCAs: []*X509CertificateID{NewX509CertificateID(testutil.ParseCertificate(c, msUefiCACert))},
 		expectedFlags:             NoPlatformConfigProfileSupport | NoDriversAndAppsConfigProfileSupport | NoBootManagerConfigProfileSupport,
@@ -1956,13 +1646,7 @@ func (s *runChecksContextSuite) TestRunGoodNoBootManagerCodeProfileSupportWhenOm
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -1997,7 +1681,7 @@ C7E003CB
 		loadedImages: []secboot_efi.Image{
 			&mockImage{
 				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+				digest:   shimDigestDefault,
 				signatures: []*efi.WinCertificateAuthenticode{
 					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 				},
@@ -2032,13 +1716,7 @@ func (s *runChecksContextSuite) TestRunGoodPreOSSecureBootAuthByEnrolledDigestsF
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2071,19 +1749,9 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		initialFlags: PermitAddonDrivers | PermitPreOSSecureBootAuthByEnrolledDigests,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		initialFlags:              PermitAddonDrivers | PermitPreOSSecureBootAuthByEnrolledDigests,
+		loadedImages:              efiImagesDefault(),
 		profileOpts:               PCRProfileOptionsDefault,
 		actions:                   []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
@@ -2111,13 +1779,7 @@ func (s *runChecksContextSuite) TestRunGoodActionProceedPermitSecureBootUserMode
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2150,18 +1812,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		actions: []actionAndArgs{
 			{action: ActionNone},
 			{action: ActionProceed},
@@ -2205,13 +1857,7 @@ func (s *runChecksContextSuite) TestRunGoodPermitSecureBootUserModeFromInitialFl
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2242,19 +1888,9 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		initialFlags: PermitSecureBootUserMode,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		initialFlags:              PermitSecureBootUserMode,
+		loadedImages:              efiImagesDefault(),
 		profileOpts:               PCRProfileOptionsDefault,
 		actions:                   []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
@@ -2282,13 +1918,7 @@ func (s *runChecksContextSuite) TestRunGoodActionProceedPermitPreOSSecureBootAut
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2323,18 +1953,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		actions: []actionAndArgs{
 			{action: ActionNone},
 			{action: ActionProceed},
@@ -2417,13 +2037,7 @@ func (s *runChecksContextSuite) TestRunGoodWeakSecureBootAlgsFromInitialFlags(c 
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2456,19 +2070,9 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		initialFlags: PermitAddonDrivers | PermitWeakSecureBootAlgorithms | PermitPreOSSecureBootAuthByEnrolledDigests,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		initialFlags:              PermitAddonDrivers | PermitWeakSecureBootAlgorithms | PermitPreOSSecureBootAuthByEnrolledDigests,
+		loadedImages:              efiImagesDefault(),
 		profileOpts:               PCRProfileOptionsDefault,
 		actions:                   []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
@@ -2501,13 +2105,7 @@ func (s *runChecksContextSuite) TestRunGoodActionProceedPermitWeakSecureBootAlgs
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2542,18 +2140,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		actions: []actionAndArgs{
 			{action: ActionNone},
 			{action: ActionProceed},
@@ -2646,13 +2234,7 @@ func (s *runChecksContextSuite) TestRunGoodActionProceedIndividualWithMultipleEr
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2687,18 +2269,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   4,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		actions: []actionAndArgs{
 			{action: ActionNone},
 			{action: ActionProceed, args: ActionProceedArgs{ErrorKindAddonDriversPresent}},
@@ -2817,13 +2389,7 @@ func (s *runChecksContextSuite) TestRunGoodPostInstallTPMDeviceLockedOut(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2854,17 +2420,7 @@ C7E003CB
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		loadedImages: efiImagesDefault(),
 		initialFlags: PostInstallChecks,
 		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(_ int) {
@@ -2904,13 +2460,7 @@ func (s *runChecksContextSuite) TestRunGoodActionClearTPMSimple(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -2952,18 +2502,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(i int) {
 			switch i {
 			case 0:
@@ -3010,13 +2550,7 @@ func (s *runChecksContextSuite) TestRunGoodActionClearTPM(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3058,18 +2592,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(i int) {
 			switch i {
 			case 0:
@@ -3117,13 +2641,7 @@ func (s *runChecksContextSuite) TestRunGoodActionClearTPMMissingAuthValueArg(c *
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3165,18 +2683,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(i int) {
 			switch i {
 			case 0:
@@ -3224,13 +2732,7 @@ func (s *runChecksContextSuite) TestRunGoodStartupLocalityNotProtected(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3259,18 +2761,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:              []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:              efiImagesDefault(),
 		profileOpts:               PCRProfileOptionsDefault,
 		actions:                   []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg:            tpm2.HashAlgorithmSHA256,
@@ -3294,13 +2786,7 @@ func (s *runChecksContextSuite) TestRunGoodInvalidPCR0ValueDiscreteTPM(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3333,18 +2819,8 @@ C7E003CB
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerNTC),
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(_ int) {
 			_, err := s.TPM.PCREvent(s.TPM.PCRHandleContext(0), []byte("foo"), nil)
 			c.Check(err, IsNil)
@@ -3454,13 +2930,7 @@ func (s *runChecksContextSuite) TestRunBadEFIVariableAccessError(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3489,18 +2959,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:   []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:   efiImagesDefault(),
 		profileOpts:    PCRProfileOptionsDefault,
 		actions:        []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg: tpm2.HashAlgorithmSHA256,
@@ -3718,13 +3178,7 @@ func (s *runChecksContextSuite) TestRunBadTPMHierarchiesOwned(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3794,13 +3248,7 @@ func (s *runChecksContextSuite) TestRunBadTPMHierarchiesOwnedRunActionClearTPMVi
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3883,13 +3331,7 @@ func (s *runChecksContextSuite) TestRunBadTPMHierarchiesOwnedRunActionEnableAndC
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -3970,13 +3412,7 @@ func (s *runChecksContextSuite) TestRunBadTPMDeviceLockoutLockedOut(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4018,18 +3454,8 @@ C7E003CB
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(_ int) {
 			c.Assert(s.TPM.DictionaryAttackParameters(s.TPM.LockoutHandleContext(), 32, 7200, 86400, nil), IsNil)
 
@@ -4059,13 +3485,7 @@ func (s *runChecksContextSuite) TestRunBadTPMDeviceLockoutLockedOutRunActionClea
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4106,19 +3526,9 @@ C7E003CB
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
-		iterations:  2,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
+		iterations:   2,
 		prepare: func(i int) {
 			switch i {
 			case 0:
@@ -4165,13 +3575,7 @@ func (s *runChecksContextSuite) TestRunBadTPMDeviceLockoutLockedOutRunActionEnab
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4212,19 +3616,9 @@ C7E003CB
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
-		iterations:  2,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
+		iterations:   2,
 		prepare: func(i int) {
 			switch i {
 			case 0:
@@ -4270,13 +3664,7 @@ func (s *runChecksContextSuite) TestRunBadTPMInsufficientCounters(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4339,13 +3727,7 @@ func (s *runChecksContextSuite) TestRunBadTPMInsufficientCountersRunActionClearT
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4417,13 +3799,7 @@ func (s *runChecksContextSuite) TestRunBadTPMInsufficientCountersRunActionEnable
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4496,13 +3872,7 @@ func (s *runChecksContextSuite) TestRunBadTPMHierarchiesOwnedAndLockedOut(c *C) 
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4610,13 +3980,7 @@ func (s *runChecksContextSuite) TestRunBadInvalidPCR2Value(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4646,18 +4010,8 @@ C7E003CB
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(_ int) {
 			_, err := s.TPM.PCREvent(s.TPM.PCRHandleContext(2), []byte("foo"), nil)
 			c.Check(err, IsNil)
@@ -4682,13 +4036,7 @@ func (s *runChecksContextSuite) TestRunBadInvalidPCR4Value(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4718,18 +4066,8 @@ C7E003CB
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(_ int) {
 			_, err := s.TPM.PCREvent(s.TPM.PCRHandleContext(4), []byte("foo"), nil)
 			c.Check(err, IsNil)
@@ -4755,13 +4093,7 @@ func (s *runChecksContextSuite) TestRunBadInvalidPCR7Value(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4791,18 +4123,8 @@ C7E003CB
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(_ int) {
 			_, err := s.TPM.PCREvent(s.TPM.PCRHandleContext(7), []byte("foo"), nil)
 			c.Check(err, IsNil)
@@ -4828,13 +4150,7 @@ func (s *runChecksContextSuite) TestRunBadUEFIDebuggingEnabled(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4876,13 +4192,7 @@ func (s *runChecksContextSuite) TestRunBadInsufficientDMAProtection(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -4929,13 +4239,7 @@ func (s *runChecksContextSuite) TestRunBadNoKernelIOMMU(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", meiAttrs, efitest.NewMockSysfsDevice(
@@ -4979,13 +4283,7 @@ func (s *runChecksContextSuite) TestRunChecksBadTPMHierarchiesOwnedAndNoKernelIO
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", meiAttrs, efitest.NewMockSysfsDevice(
@@ -5084,13 +4382,7 @@ func (s *runChecksContextSuite) TestRunBadHostSecurityErrorMissingMSR(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -5131,13 +4423,7 @@ func (s *runChecksContextSuite) TestRunBadHostSecurityError(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000255
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusManufacturingMode,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -5177,13 +4463,7 @@ func (s *runChecksContextSuite) TestRunBadSHA1(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -5246,13 +4526,7 @@ func (s *runChecksContextSuite) TestRunBadPCRProfileMostSecure(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -5281,18 +4555,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:   []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:   efiImagesDefault(),
 		profileOpts:    PCRProfileOptionMostSecure,
 		actions:        []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg: tpm2.HashAlgorithmSHA256,
@@ -5318,13 +4582,7 @@ func (s *runChecksContextSuite) TestRunBadInvalidPCR7ValuePCRProfilePermitNoSecu
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -5354,18 +4612,8 @@ C7E003CB
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionPermitNoSecureBootPolicyProfile,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionPermitNoSecureBootPolicyProfile,
 		prepare: func(_ int) {
 			_, err := s.TPM.PCREvent(s.TPM.PCRHandleContext(7), []byte("foo"), nil)
 			c.Check(err, IsNil)
@@ -5392,13 +4640,7 @@ func (s *runChecksContextSuite) TestRunBadAddonDriversPresent(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -5430,18 +4672,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:   []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:   efiImagesDefault(),
 		profileOpts:    PCRProfileOptionsDefault,
 		actions:        []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg: tpm2.HashAlgorithmSHA256,
@@ -5494,13 +4726,7 @@ func (s *runChecksContextSuite) TestRunBadSysPrepAppsPresent(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -5546,18 +4772,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:   []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:   efiImagesDefault(),
 		profileOpts:    PCRProfileOptionsDefault,
 		actions:        []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg: tpm2.HashAlgorithmSHA256,
@@ -5615,13 +4831,7 @@ func (s *runChecksContextSuite) TestRunBadAbsoluteActive(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -5653,18 +4863,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:   []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:   efiImagesDefault(),
 		profileOpts:    PCRProfileOptionsDefault,
 		actions:        []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg: tpm2.HashAlgorithmSHA256,
@@ -5690,13 +4890,7 @@ func (s *runChecksContextSuite) TestRunBadNotAllBootManagerCodeDigestsVerified(c
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -5731,12 +4925,12 @@ C7E003CB
 		loadedImages: []secboot_efi.Image{
 			&mockImage{
 				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+				digest:   shimDigestDefault,
 				signatures: []*efi.WinCertificateAuthenticode{
 					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 				},
 			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
+			&mockImage{contents: []byte("mock grub executable"), digest: grubDigestDefault},
 		},
 		expectedPcrAlg: tpm2.HashAlgorithmSHA256,
 		profileOpts:    PCRProfileOptionsDefault,
@@ -5755,13 +4949,7 @@ func (s *runChecksContextSuite) TestRunBadInvalidSecureBootModeSecureBootDisable
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -5793,18 +4981,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:   []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:   efiImagesDefault(),
 		profileOpts:    PCRProfileOptionsDefault,
 		actions:        []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg: tpm2.HashAlgorithmSHA256,
@@ -5832,13 +5010,7 @@ func (s *runChecksContextSuite) TestRunBadInvalidSecureBootModeSecureBootDisable
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -5871,18 +5043,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:   []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:   efiImagesDefault(),
 		profileOpts:    PCRProfileOptionsDefault,
 		actions:        []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg: tpm2.HashAlgorithmSHA256,
@@ -5908,13 +5070,7 @@ func (s *runChecksContextSuite) TestRunBadNoSecureBootPolicySupport(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -5963,18 +5119,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:   []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:   efiImagesDefault(),
 		profileOpts:    PCRProfileOptionsDefault,
 		actions:        []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg: tpm2.HashAlgorithmSHA256,
@@ -5993,13 +5139,7 @@ func (s *runChecksContextSuite) TestRunBadWeakSecureBootAlgs(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -6032,18 +5172,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:   []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:   efiImagesDefault(),
 		profileOpts:    PCRProfileOptionsDefault,
 		actions:        []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg: tpm2.HashAlgorithmSHA256,
@@ -6112,13 +5242,7 @@ func (s *runChecksContextSuite) TestRunBadInvalidSecureBootModeNoDeployedMode(c 
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -6149,18 +5273,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:   []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:   efiImagesDefault(),
 		profileOpts:    PCRProfileOptionsDefault,
 		actions:        []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg: tpm2.HashAlgorithmSHA256,
@@ -6228,17 +5342,7 @@ C7E003CB
 //		prepare: func(_ int) {
 //			c.Assert(s.TPM.HierarchyChangeAuth(s.TPM.LockoutHandleContext(), []byte{1, 2, 3, 4}, nil), IsNil)
 //		},
-//		loadedImages: []secboot_efi.Image{
-//			&mockImage{
-//				contents: []byte("mock shim executable"),
-//				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-//				signatures: []*efi.WinCertificateAuthenticode{
-//					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-//				},
-//			},
-//			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-//			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-//		},
+//		loadedImages: efiImagesDefault(),
 //		profileOpts:    PCRProfileOptionsDefault,
 //		actions:        []actionAndArgs{{action: ActionNone}},
 //		expectedPcrAlg: tpm2.HashAlgorithmSHA256,
@@ -6305,12 +5409,12 @@ C7E003CB
 //		loadedImages: []secboot_efi.Image{
 //			&mockImage{
 //				contents: []byte("mock shim executable"),
-//				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
+//				digest:   shimDigestDefault,
 //				signatures: []*efi.WinCertificateAuthenticode{
 //					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
 //				},
 //			},
-//			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
+//			&mockImage{contents: []byte("mock grub executable"), digest: grubDigestDefault},
 //		},
 //		profileOpts:    PCRProfileOptionsDefault,
 //		actions:        []actionAndArgs{{action: ActionNone}},
@@ -6341,13 +5445,7 @@ func (s *runChecksContextSuite) TestRunChecksBadInsufficientDMAProtectionAndNoKe
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", meiAttrs, efitest.NewMockSysfsDevice(
@@ -6377,18 +5475,8 @@ C7E003CB
 			tpm2.PropertyPSFamilyIndicator: 1,
 			tpm2.PropertyManufacturer:      uint32(tpm2.TPMManufacturerINTC),
 		},
-		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
+		enabledBanks:   []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
+		loadedImages:   efiImagesDefault(),
 		profileOpts:    PCRProfileOptionsDefault,
 		actions:        []actionAndArgs{{action: ActionNone}},
 		expectedPcrAlg: tpm2.HashAlgorithmSHA256,
@@ -6492,13 +5580,7 @@ func (s *runChecksContextSuite) TestRunChecksActionClearTPMViaFirmwareNotAvailab
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -6612,13 +5694,7 @@ func (s *runChecksContextSuite) TestRunChecksActionProceedUnavailable(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -6695,13 +5771,7 @@ func (s *runChecksContextSuite) TestRunChecksActionProceedErrorsOrderedAfterOthe
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -6775,13 +5845,7 @@ func (s *runChecksContextSuite) TestRunChecksActionProceedUnsupportedArgumentTyp
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -6815,18 +5879,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		actions: []actionAndArgs{
 			{action: ActionNone},
 			{action: ActionProceed, args: map[string]any{"error-kinds": 1}},
@@ -6896,13 +5950,7 @@ func (s *runChecksContextSuite) TestRunChecksActionProceedUnexpectedErrorKind1(c
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -6936,18 +5984,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		actions: []actionAndArgs{
 			{action: ActionNone},
 			{action: ActionProceed, args: ActionProceedArgs{ErrorKindPreOSSecureBootAuthByEnrolledDigests}},
@@ -7017,13 +6055,7 @@ func (s *runChecksContextSuite) TestRunChecksActionProceedUnexpectedErrorKind2(c
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -7058,18 +6090,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   3,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		actions: []actionAndArgs{
 			{action: ActionNone},
 			{action: ActionProceed, args: ActionProceedArgs{ErrorKindAddonDriversPresent}},
@@ -7156,13 +6178,7 @@ func (s *runChecksContextSuite) TestRunChecksActionProceedUnexpectedErrorKind3(c
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -7197,18 +6213,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   3,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		actions: []actionAndArgs{
 			{action: ActionNone},
 			{action: ActionProceed},
@@ -7284,13 +6290,7 @@ func (s *runChecksContextSuite) TestRunChecksClearTPMNotAvailable(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -7363,13 +6363,7 @@ func (s *runChecksContextSuite) TestRunChecksClearTPMSimpleNotAvailable(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -7440,13 +6434,7 @@ func (s *runChecksContextSuite) TestRunBadActionClearTPMSimpleFailsInvalidAuthVa
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -7488,18 +6476,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(i int) {
 			switch i {
 			case 0:
@@ -7553,13 +6531,7 @@ func (s *runChecksContextSuite) TestRunBadActionClearTPMSimpleFailsWithError(c *
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -7601,18 +6573,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(i int) {
 			switch i {
 			case 0:
@@ -7666,13 +6628,7 @@ func (s *runChecksContextSuite) TestRunBadActionClearTPMSimpleBecomesUnavailable
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -7714,18 +6670,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   3,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(i int) {
 			switch i {
 			case 0:
@@ -7792,13 +6738,7 @@ func (s *runChecksContextSuite) TestRunBadActionClearTPMInvalidAuthValueArgument
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -7840,18 +6780,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(i int) {
 			switch i {
 			case 0:
@@ -7907,13 +6837,7 @@ func (s *runChecksContextSuite) TestRunBadActionClearTPMInvalidAuthValue(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -7955,18 +6879,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(i int) {
 			switch i {
 			case 0:
@@ -8021,13 +6935,7 @@ func (s *runChecksContextSuite) TestRunBadActionClearTPMFailsWithError(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -8069,18 +6977,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   2,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(i int) {
 			switch i {
 			case 0:
@@ -8134,13 +7032,7 @@ func (s *runChecksContextSuite) TestRunBadActionClearTPMBecomesUnavailableAfterL
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -8182,18 +7074,8 @@ C7E003CB
 		},
 		enabledBanks: []tpm2.HashAlgorithmId{tpm2.HashAlgorithmSHA256},
 		iterations:   3,
-		loadedImages: []secboot_efi.Image{
-			&mockImage{
-				contents: []byte("mock shim executable"),
-				digest:   testutil.DecodeHexString(c, "25e1b08db2f31ff5f5d2ea53e1a1e8fda6e1d81af4f26a7908071f1dec8611b7"),
-				signatures: []*efi.WinCertificateAuthenticode{
-					efitest.ReadWinCertificateAuthenticodeDetached(c, shimUbuntuSig4),
-				},
-			},
-			&mockImage{contents: []byte("mock grub executable"), digest: testutil.DecodeHexString(c, "d5a9780e9f6a43c2e53fe9fda547be77f7783f31aea8013783242b040ff21dc0")},
-			&mockImage{contents: []byte("mock kernel executable"), digest: testutil.DecodeHexString(c, "2ddfbd91fa1698b0d133c38ba90dbba76c9e08371ff83d03b5fb4c2e56d7e81f")},
-		},
-		profileOpts: PCRProfileOptionsDefault,
+		loadedImages: efiImagesDefault(),
+		profileOpts:  PCRProfileOptionsDefault,
 		prepare: func(i int) {
 			switch i {
 			case 0:

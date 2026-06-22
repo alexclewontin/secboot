@@ -850,6 +850,108 @@ func (c *RunChecksContext) ProfileOpts() PCRProfileOptionsFlags {
 	return c.profileOpts
 }
 
+// convertErrorsToActions walks through the list of given errors and classifies each
+// into an error kind and calculates possible corrective actions.
+//
+// Returns:
+//
+//	[]error: classified errors with their related corrective actions
+//	error:   an internal error occurred (eg: an error could not be classified,...)
+//
+// Modifies the current RunChecksContext instance:
+//
+//	.expectedActions
+//	.proceedFlags
+func (c *RunChecksContext) convertErrorsToActions(ctx context.Context, err error) ([]error, error) {
+	var errs []error
+
+	// Reset the list of expected actions.
+	c.expectedActions = nil
+
+	// Reset the flags that would be enabled if ActionProceed is used.
+	c.proceedFlags = nil
+
+	// errInfo contains the error kind and arguments for each error.
+	var errInfo []errorInfo
+
+	// Classify each error into an error kind and associated arguments and
+	// save this information. We do this separate pass before creating
+	// the WithKindAndActionsError because some errors encountered here
+	// may change the available actions.
+	for _, e := range unwrapCompoundError(err) {
+		info, err := c.classifyRunChecksError(ctx, e)
+		if err != nil {
+			return nil, NewWithKindAndActionsError(
+				ErrorKindInternal,
+				nil, nil, // args, actions
+				fmt.Errorf("cannot classify error %v: %w", e, err),
+			)
+		}
+
+		errInfo = append(errInfo, info)
+	}
+
+	// Track whether ActionProceed can be added as an action to error
+	// kinds that support this. Is true until we encounter an error kind
+	// that doesn't permit it.
+	permitActionProceed := true
+
+	// Intermediate error slice so we can do a second pass over errors
+	// that support ActionProceed, adding this action if possible and
+	// ordering these errors to appear after all other errors.
+	var errsProceed []*WithKindAndActionsError
+
+	proceedFlags := make(map[ErrorKind]CheckFlags)
+
+	// Iterate over the error info, creating a WithKindAndActionsError
+	// for each one with associated actions.
+	for _, info := range errInfo {
+		actions := errorKindToActions[info.kind]
+		actions, err = c.filterUnavailableActions(info, actions)
+		if err != nil {
+			return nil, NewWithKindAndActionsError(
+				ErrorKindInternal,
+				nil, nil, // args, actions
+				fmt.Errorf("cannot filter unavailable actions: %w", err),
+			)
+		}
+
+		proceedFlag, canProceed := errorKindToProceedFlag[info.kind]
+		if !canProceed {
+			proceedFlag, canProceed = errorKindWithArgsToProceedFlag[errorKindWithArgs{kind: info.kind, args: info.args}]
+		}
+		if !canProceed {
+			// This error kind doesn't support ActionProceed. Don't
+			// permit it at all for now, waiting until all of the errors
+			// we return support it.
+			permitActionProceed = false
+			errs = append(errs, NewWithKindAndActionsError(info.kind, info.args, actions, info.err))
+		} else {
+			errsProceed = append(errsProceed, NewWithKindAndActionsError(info.kind, info.args, actions, info.err))
+			proceedFlags[info.kind] = proceedFlag
+		}
+
+		c.expectedActions = append(c.expectedActions, actions...)
+	}
+
+	// Add ActionProceed to any error kinds that support it if it is allowed
+	// right now, and append these errors to the list of errors we return.
+	for _, e := range errsProceed {
+		if permitActionProceed {
+			e.Actions = insertActionProceed(e.Actions)
+		}
+		errs = append(errs, e)
+	}
+	if permitActionProceed {
+		c.proceedFlags = proceedFlags
+	}
+	if len(c.proceedFlags) > 0 {
+		// We are returning errors with ActionProceed enabled.
+		c.expectedActions = append(c.expectedActions, ActionProceed)
+	}
+	return errs, nil
+}
+
 // Run will run the specified action, and if that completes successfully will run another
 // iteration of [RunChecks] and test the result against the preferred [WithAutoTCGPCRProfile]
 // configuration. On success, this will return the CheckResult. On failure, this will return
@@ -866,7 +968,6 @@ func (c *RunChecksContext) Run(ctx context.Context, action Action, args map[stri
 	}
 
 	c.expectedActions = nil
-	var errs []error
 	for {
 		result, err := RunChecks(ctx, c.flags, c.loadedImages)
 		c.lastErr = err
@@ -879,101 +980,20 @@ func (c *RunChecksContext) Run(ctx context.Context, action Action, args map[stri
 			_, profileErr = profile.PCRs()
 		}
 		if err == nil && profileErr == nil {
-			// If neither step failed, break and return success.
+			// If neither step failed, return success.
 			c.result = result
-			break
+			return c.result, nil
 		}
 
 		if err != nil {
-			// If RunChecks failed, save its error and return the appropriate error kinds.
+			// RunChecks failed, save its error and return the appropriate error kinds.
 			c.errs = append(c.errs, err)
-
-			// Reset the list of expected actions.
-			c.expectedActions = nil
-
-			// Reset the flags that would be enabled if ActionProceed is used.
-			c.proceedFlags = nil
-
-			// errInfo contains the error kind and arguments for each error.
-			var errInfo []errorInfo
-
-			// Classify each error into an error kind and associated arguments and
-			// save this information. We do this separate pass before creating
-			// the WithKindAndActionsError because some errors encountered here
-			// may change the available actions.
-			for _, e := range unwrapCompoundError(err) {
-				info, err := c.classifyRunChecksError(ctx, e)
-				if err != nil {
-					return nil, NewWithKindAndActionsError(
-						ErrorKindInternal,
-						nil, nil, // args, actions
-						fmt.Errorf("cannot classify error %v: %w", e, err),
-					)
-				}
-
-				errInfo = append(errInfo, info)
+			errs, errConvert := c.convertErrorsToActions(ctx, err)
+			if errConvert != nil {
+				return nil, errConvert
+			} else {
+				return nil, joinErrors(errs...)
 			}
-
-			// Track whether ActionProceed can be added as an action to error
-			// kinds that support this. Is true until we encounter an error kind
-			// that doesn't permit it.
-			permitActionProceed := true
-
-			// Intermediate error slice so we can do a second pass over errors
-			// that support ActionProceed, adding this action if possible and
-			// ordering these errors to appear after all other errors.
-			var errsProceed []*WithKindAndActionsError
-
-			proceedFlags := make(map[ErrorKind]CheckFlags)
-
-			// Iterate over the error info, creating a WithKindAndActionsError
-			// for each one with associated actions.
-			for _, info := range errInfo {
-				actions := errorKindToActions[info.kind]
-				actions, err = c.filterUnavailableActions(info, actions)
-				if err != nil {
-					return nil, NewWithKindAndActionsError(
-						ErrorKindInternal,
-						nil, nil, // args, actions
-						fmt.Errorf("cannot filter unavailable actions: %w", err),
-					)
-				}
-
-				proceedFlag, canProceed := errorKindToProceedFlag[info.kind]
-				if !canProceed {
-					proceedFlag, canProceed = errorKindWithArgsToProceedFlag[errorKindWithArgs{kind: info.kind, args: info.args}]
-				}
-				if !canProceed {
-					// This error kind doesn't support ActionProceed. Don't
-					// permit it at all for now, waiting until all of the errors
-					// we return support it.
-					permitActionProceed = false
-					errs = append(errs, NewWithKindAndActionsError(info.kind, info.args, actions, info.err))
-				} else {
-					errsProceed = append(errsProceed, NewWithKindAndActionsError(info.kind, info.args, actions, info.err))
-					proceedFlags[info.kind] = proceedFlag
-				}
-
-				c.expectedActions = append(c.expectedActions, actions...)
-			}
-
-			// Add ActionProceed to any error kinds that support it if it is allowed
-			// right now, and append these errors to the list of errors we return.
-			for _, e := range errsProceed {
-				if permitActionProceed {
-					e.Actions = insertActionProceed(e.Actions)
-				}
-				errs = append(errs, e)
-			}
-			if permitActionProceed {
-				c.proceedFlags = proceedFlags
-			}
-			if len(c.proceedFlags) > 0 {
-				// We are returning errors with ActionProceed enabled.
-				c.expectedActions = append(c.expectedActions, ActionProceed)
-			}
-
-			break
 		}
 
 		// RunChecks succeeded but there was a profile error with the
@@ -1010,10 +1030,4 @@ func (c *RunChecksContext) Run(ctx context.Context, action Action, args map[stri
 			}
 		}
 	}
-
-	if c.result != nil {
-		return c.result, nil
-	}
-
-	return nil, joinErrors(errs...)
 }

@@ -33,6 +33,7 @@ import (
 	"github.com/canonical/go-tpm2/ppi"
 	tpm2_testutil "github.com/canonical/go-tpm2/testutil"
 	secboot_efi "github.com/snapcore/secboot/efi"
+	"github.com/snapcore/secboot/internal/efitest"
 	"github.com/snapcore/secboot/internal/testutil"
 	"github.com/snapcore/secboot/internal/tpm2_device"
 	. "gopkg.in/check.v1"
@@ -58,6 +59,7 @@ var (
 	msUefiCACert2023          []byte
 	msOptionROMUefiCACert2023 []byte
 	shimUbuntuSig4            []byte
+	shimUbuntuSig4WinCert     *efi.WinCertificateAuthenticode
 	snakeoilCert              []byte
 )
 
@@ -68,6 +70,7 @@ func init() {
 	msUefiCACert2023 = testutil.MustDecodePEMType("CERTIFICATE", msUefiCACert2023PEM)
 	msOptionROMUefiCACert2023 = testutil.MustDecodePEMType("CERTIFICATE", msOptionROMUefiCACert2023PEM)
 	shimUbuntuSig4 = testutil.MustDecodePEMType("PKCS7", shimUbuntuSig4PEM)
+	shimUbuntuSig4WinCert = efitest.MustReadWinCertificateAuthenticodeDetached(shimUbuntuSig4)
 	snakeoilCert = testutil.MustDecodePEMType("CERTIFICATE", snakeoilCertPEM)
 }
 

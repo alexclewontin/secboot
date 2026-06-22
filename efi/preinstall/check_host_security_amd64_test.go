@@ -42,13 +42,7 @@ func (s *hostSecurityAMD64Suite) TestCheckHostSecurityIntelGood(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -146,13 +140,7 @@ func (s *hostSecurityAMD64Suite) TestCheckHostSecurityIntelErrMEI(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000255
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusManufacturingMode,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", meiAttrs, efitest.NewMockSysfsDevice(
@@ -198,13 +186,7 @@ func (s *hostSecurityAMD64Suite) TestCheckHostSecuritySecureBootPolicyFirmwareDe
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
@@ -232,13 +214,7 @@ func (s *hostSecurityAMD64Suite) TestCheckHostSecurityNoIOMMU(c *C) {
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", meiAttrs, efitest.NewMockSysfsDevice(
@@ -264,13 +240,7 @@ func (s *hostSecurityAMD64Suite) TestCheckHostSecuritySecureBootPolicyFirmwareDe
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/pci0000:00/0000:00:16.0/mei/mei0", map[string]string{"DEVNAME": "mei0"}, "mei", meiAttrs, efitest.NewMockSysfsDevice(
@@ -299,13 +269,7 @@ func (s *hostSecurityAMD64Suite) TestCheckHostSecurityIntelErrCPUDebuggingUnlock
 0:16.1.27.2176
 0:16.0.15.1624
 `),
-		"fw_status": []byte(`94000245
-09F10506
-00000020
-00004000
-00041F03
-C7E003CB
-`),
+		"fw_status": fwStatusBase,
 	}
 	devices := []internal_efi.SysfsDevice{
 		efitest.NewMockSysfsDevice("/sys/devices/virtual/iommu/dmar0", nil, "iommu", nil, nil),
