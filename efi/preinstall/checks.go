@@ -43,7 +43,7 @@ const (
 	// PCR 0 is optional.
 	PermitNoPlatformFirmwareProfileSupport CheckFlags = 1 << iota
 
-	// PermitNoPlatformConfigProfileSupportd indicates that support for
+	// PermitNoPlatformConfigProfileSupport indicates that support for
 	// generating profiles for PCR 1 is not optional.
 	//
 	// Note that this is currently mandatory because this profile is not
@@ -147,6 +147,10 @@ const (
 	// PermitSecureBootUserMode will prevent RunChecks from returning an error if secure
 	// boot is enabled but not in deployed mode on systems that support UEFI >= 2.5.
 	PermitSecureBootUserMode
+
+	// PermitNoHardwareRootOfTrust will prevent RunChecks from returning an error if
+	// the platform firmware is not protected by a properly configured hardware root-of-trust.
+	PermitNoHardwareRootOfTrust
 )
 
 var (
@@ -308,13 +312,18 @@ func RunChecks(ctx context.Context, flags CheckFlags, loadedImages []secboot_efi
 	if virtMode == detectVirtNone {
 		// Only run host security checks if we are not in a VM
 		fwIntegrity, err := checkHostSecurity(runChecksEnv, log)
+
 		if err != nil {
+			// Either a simple error or a compound error
 			var ce CompoundError
 			if !errors.As(err, &ce) {
 				return nil, &HostSecurityError{err}
 			}
 			for _, e := range ce.Unwrap() {
+				var nohwrotErr *NoHardwareRootOfTrustError
 				if (errors.Is(e, ErrInsufficientDMAProtection) || errors.Is(e, ErrNoKernelIOMMU)) && flags&PermitInsufficientDMAProtection > 0 {
+					warnings = append(warnings, e)
+				} else if errors.As(e, &nohwrotErr) && flags&PermitNoHardwareRootOfTrust > 0 {
 					warnings = append(warnings, e)
 				} else {
 					deferredErrs = append(deferredErrs, &HostSecurityError{e})

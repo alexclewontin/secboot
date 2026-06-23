@@ -215,6 +215,11 @@ const (
 	// TODO: it might be worth attempting to match the verification with a corresponding
 	// launch event from PCR2 or PCR4 to grab the device path and include it as an argument.
 	ErrorKindPreOSSecureBootAuthByEnrolledDigests ErrorKind = "pre-os-secure-boot-auth-by-enrolled-digests"
+
+	// ErrorKindNoHardwareRootOfTrust indicates that the platform's UEFI firmware is not
+	// verified nor measured by a hardware root of trust (typically Boot Guard Authenticated
+	// Code Module (ACM) on Intel systems and Platform Secure Boot (PSB) enabled on AMD systems.
+	ErrorKindNoHardwareRootOfTrust ErrorKind = "no-hardware-root-of-trust"
 )
 
 // PCRUnusableArg represents an unusable PCR handle that can be

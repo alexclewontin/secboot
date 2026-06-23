@@ -214,7 +214,7 @@ func (e *HostSecurityError) Unwrap() error {
 // NoHardwareRootOfTrustError is returned wrapped in [HostSecurityError] if the platform
 // firmware is not protected by a properly configured hardware root-of-trust. This won't
 // be returned if the PermitVirtualMachine flag is supplied to [RunChecks] and the current
-// environment is a virtual machine.
+// environment is a virtual machine, or if the PermitNoHardwareRootOfTrust flag is supplied.
 type NoHardwareRootOfTrustError struct {
 	err error
 }

@@ -23,6 +23,7 @@ type options struct {
 		PermitWeakSecureBootAlgorithms             bool `long:"permit-weak-secure-boot-algs" description:"Permit secure boot verification using weak algorithms"`
 		PermitPreOSSecureBootAuthByEnrolledDigests bool `long:"permit-preos-secure-boot-auth-by-enrolled-digests" description:"Allow pre-OS components to be verified by including a digest in db. This increases fragility of profiles that include PCR7"`
 		PermitInsufficientDMAProtection            bool `long:"permit-insufficient-dma-protection" description:"Permit environments that don't have sufficient DMA protection"`
+		PermitNoHardwareRootOfTrust                bool `long:"permit-no-hw-root-of-trust" description:"Permit platforms that don't have a HW root of trust"`
 	} `group:"Initial check options"`
 
 	Profile struct {
@@ -74,6 +75,9 @@ func run() error {
 	}
 	if opts.Check.PermitInsufficientDMAProtection {
 		checkFlags |= preinstall.PermitInsufficientDMAProtection
+	}
+	if opts.Check.PermitNoHardwareRootOfTrust {
+		checkFlags |= preinstall.PermitNoHardwareRootOfTrust
 	}
 
 	var bootImages []secboot_efi.Image

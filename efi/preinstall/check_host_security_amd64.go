@@ -42,26 +42,38 @@ func checkHostSecurity(env internal_efi.HostEnvironment, log *tcglog.Log) (platf
 		return platformFirmwareIntegrityNone, fmt.Errorf("cannot obtain AMD64 environment: %w", err)
 	}
 
+	var errs []error
+
 	var integrity platformFirmwareIntegrityConfig
 	switch cpuVendor {
 	case cpuVendorIntel:
 		if err := checkHostSecurityIntelBootGuard(env); err != nil {
-			return platformFirmwareIntegrityNone, fmt.Errorf("encountered an error when checking Intel BootGuard configuration: %w", err)
+			var nohwrotErr *NoHardwareRootOfTrustError
+			ctxErr := fmt.Errorf("encountered an error when checking Intel BootGuard configuration: %w", err)
+			if !errors.As(err, &nohwrotErr) {
+				return platformFirmwareIntegrityNone, ctxErr
+			}
+			errs = append(errs, ctxErr)
 		}
 		if err := checkHostSecurityIntelCPUDebuggingLocked(amd64Env); err != nil {
 			return platformFirmwareIntegrityNone, fmt.Errorf("encountered an error when checking Intel CPU debugging configuration: %w", err)
 		}
-		integrity = platformFirmwareIntegrityVerified
+		if len(errs) == 0 {
+			integrity = platformFirmwareIntegrityVerified
+		}
 	case cpuVendorAMD:
 		integrity, err = checkHostSecurityAMDPSP(env)
 		if err != nil {
-			return platformFirmwareIntegrityNone, fmt.Errorf("encountered an error when checking the AMD PSP configuration: %w", err)
+			ctxErr := fmt.Errorf("encountered an error when checking the AMD PSP configuration: %w", err)
+			var nohwrotErr *NoHardwareRootOfTrustError
+			if !errors.As(err, &nohwrotErr) {
+				return platformFirmwareIntegrityNone, ctxErr
+			}
+			errs = append(errs, ctxErr)
 		}
 	default:
 		panic("not reached")
 	}
-
-	var errs []error
 
 	if err := checkSecureBootPolicyPCRForDegradedFirmwareSettings(log); err != nil {
 		var ce CompoundError

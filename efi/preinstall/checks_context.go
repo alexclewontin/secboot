@@ -154,6 +154,9 @@ func init() {
 		ErrorKindPreOSSecureBootAuthByEnrolledDigests: []Action{
 			// TODO: Add action to add PermitPreOSSecureBootAuthByEnrolledDigests to CheckFlags.
 		},
+		ErrorKindNoHardwareRootOfTrust: []Action{
+			// TODO: Add action to add PermitNoHardwareRootOfTrust to CheckFlags.
+		},
 	}
 
 	errorKindToProceedFlag = map[ErrorKind]CheckFlags{
@@ -165,6 +168,7 @@ func init() {
 		ErrorKindAbsolutePresent:                      PermitAbsoluteComputrace,
 		ErrorKindWeakSecureBootAlgorithmsDetected:     PermitWeakSecureBootAlgorithms,
 		ErrorKindPreOSSecureBootAuthByEnrolledDigests: PermitPreOSSecureBootAuthByEnrolledDigests,
+		ErrorKindNoHardwareRootOfTrust:                PermitNoHardwareRootOfTrust,
 	}
 
 	errorKindWithArgsToProceedFlag = map[errorKindWithArgs]CheckFlags{
@@ -514,6 +518,11 @@ func (c *RunChecksContext) classifyRunChecksError(ctx context.Context, err error
 
 	if errors.Is(err, ErrNoKernelIOMMU) {
 		return errorInfo{kind: ErrorKindNoKernelIOMMU}, nil
+	}
+
+	var nohwrotErr *NoHardwareRootOfTrustError
+	if errors.As(err, &nohwrotErr) {
+		return errorInfo{kind: ErrorKindNoHardwareRootOfTrust}, nil
 	}
 
 	var hsErr *HostSecurityError
