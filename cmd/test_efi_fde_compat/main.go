@@ -8,6 +8,7 @@ import (
 	"github.com/jessevdk/go-flags"
 	secboot_efi "github.com/snapcore/secboot/efi"
 	"github.com/snapcore/secboot/efi/preinstall"
+	efi "github.com/snapcore/secboot/internal/efi"
 	"github.com/snapcore/snapd/snap/snapdir"
 	"github.com/snapcore/snapd/snap/squashfs"
 )
@@ -35,6 +36,8 @@ type options struct {
 	} `group:"PCR profile options"`
 
 	Action preinstall.Action `long:"action" description:"What action to run"`
+
+	EventLog string `long:"event-log" description:"Alternate TCG event log" value-name:"EVENT-LOG"`
 
 	Positional struct {
 		BootImages []string `positional-arg-name:"ordered paths to the EFI boot components for the current boot"`
@@ -79,6 +82,11 @@ func run() error {
 	if opts.Check.PermitNoHardwareRootOfTrust {
 		checkFlags |= preinstall.PermitNoHardwareRootOfTrust
 	}
+
+	if opts.EventLog != "" {
+		efi.SetEventLogPath(opts.EventLog)
+	}
+	fmt.Println("Using TCG event log:", efi.EventLogPath())
 
 	var bootImages []secboot_efi.Image
 	for _, img := range opts.Positional.BootImages {
