@@ -974,7 +974,7 @@ func wrapPCRError(pcr tpm2.Handle, err error) error {
 	case 7:
 		return &SecureBootPolicyPCRError{err}
 	default:
-		panic("invalid PCR")
+		panic(fmt.Sprintf("invalid PCR: %v", pcr))
 	}
 }
 
