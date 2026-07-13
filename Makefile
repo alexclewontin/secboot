@@ -3,16 +3,17 @@ help:
 	# make build                  Build companion tools
 	# make check                  Run all tests
 	# make check-efi-preinstall   Run tests of package efi/preinstall
+	# make check-efi              Run tests of package efi
 	# make list-packages          List Go packages
 
+
+.PHONY: build check check-tpm2-simulator FORCE
+FORCE:
 
 # Build command line programs
 build:
 	go build -o test_efi_fde_compat cmd/test_efi_fde_compat/main.go
 	go build -o run_argon2 cmd/run_argon2/main.go
-
-.PHONY: check check-tpm2-simulator FORCE
-FORCE:
 
 # Disable optimization and inlining (to facilitate step-by-step debugging)
 GCFLAGS = -gcflags "-N -l"
@@ -32,6 +33,16 @@ check-efi-preinstall: check-efi-preinstall.bin check-tpm2-simulator
 	# You may now view the coverage report by executing:
 	#     go tool cover -func=coverage.out
 	# or: go tool cover -html=coverage.out
+
+check-efi.bin: FORCE
+	go test -cover -c -o $@ $(GCFLAGS) ./efi -v -ldflags '-X github.com/snapcore/secboot/internal/testenv.testBinary=enabled' -race -p 1
+
+check-efi: check-efi.bin check-tpm2-simulator
+	@# cd to efi/. as testdata is expected in .
+	cd efi && ../$< -test.coverprofile=coverage.out -check.v
+
+fmt:
+	go fmt ./...
 
 list-packages:
 	go list ./...
