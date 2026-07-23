@@ -19,7 +19,10 @@
 
 package efi
 
-import "github.com/canonical/go-tpm2"
+import (
+	"fmt"
+	"github.com/canonical/go-tpm2"
+)
 
 const (
 	kernelConfigPCR tpm2.Handle = 12
@@ -34,7 +37,7 @@ func makePcrFlags(pcrs ...tpm2.Handle) pcrFlags {
 	var out pcrFlags
 	for _, pcr := range pcrs {
 		if pcr >= 32 {
-			panic("invalid PCR")
+			panic(fmt.Sprintf("invalid PCR: %v", pcr))
 		}
 		out |= 1 << pcr
 	}
@@ -54,7 +57,7 @@ func (f pcrFlags) PCRs() (out tpm2.HandleList) {
 func (f pcrFlags) Contains(pcrs ...tpm2.Handle) bool {
 	for _, pcr := range pcrs {
 		if pcr >= 32 {
-			panic("invalid PCR")
+			panic(fmt.Sprintf("invalid PCR: %v", pcr))
 		}
 		if f&(1<<pcr) == 0 {
 			return false

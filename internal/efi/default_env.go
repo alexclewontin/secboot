@@ -45,6 +45,14 @@ var (
 	eventLogPath = "/sys/kernel/security/tpm0/binary_bios_measurements" // Path of the TCG event log for the default TPM, in binary form
 )
 
+func SetEventLogPath(path string) {
+	eventLogPath = path
+}
+
+func EventLogPath() string {
+	return eventLogPath
+}
+
 // decodeKernelUeventParams decodes the uevent attribute for the device associated
 // with the supplied sysfs path, and returns a map of variables.
 //

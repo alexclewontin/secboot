@@ -76,7 +76,7 @@ func WithPlatformFirmwareProfile() PCRProfileEnablePCRsOption {
 
 // WithDriversAndAppsProfile adds the UEFI Drivers and UEFI Applications profile
 // (measured to PCR2). This is copied directly from the current host environment
-// configiguration.
+// configuration.
 func WithDriversAndAppsProfile() PCRProfileEnablePCRsOption {
 	return newPcrProfileSetPcrOption(internal_efi.DriversAndAppsPCR)
 }
