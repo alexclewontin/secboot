@@ -3,7 +3,7 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 
 /*
- * Copyright (C) 2024 Canonical Ltd
+ * Copyright (C) 2021-2026 Canonical Ltd
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -19,9 +19,18 @@
  *
  */
 
-package efi
+package efi_test
 
-// AMD64 implements [HostEnvironment.AMD64].
-func (defaultEnvImpl) AMD64() (HostEnvironmentAMD64, error) {
-	return nil, ErrNotAMD64Host
+import (
+	. "github.com/snapcore/secboot/internal/efi"
+	. "gopkg.in/check.v1"
+)
+
+type defaultEnvAMD64Suite struct{}
+
+var _ = Suite(&defaultEnvAMD64Suite{})
+
+func (s *defaultEnvAMD64Suite) TestNotAMD64Host(c *C) {
+	_, err := DefaultEnv.AMD64()
+	c.Check(err, Equals, ErrNotAMD64Host)
 }
