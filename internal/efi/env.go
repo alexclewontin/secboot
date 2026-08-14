@@ -1,7 +1,7 @@
 // -*- Mode: Go; indent-tabs-mode: t -*-
 
 /*
- * Copyright (C) 2024 Canonical Ltd
+ * Copyright (C) 2024-2026 Canonical Ltd
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -83,6 +83,16 @@ type HostEnvironmentAMD64 interface {
 	ReadMSRs(msr uint32) (map[uint32]uint64, error)
 }
 
+// HostEnvironmentARM64 is an interface that abstracts out a host environment specific
+// to ARM64 platforms.
+type HostEnvironmentARM64 interface {
+	// SystemVendor returns the system vendor.
+	SystemVendor() (string, error)
+
+	// ProductName returns the system product name.
+	ProductName() (string, error)
+}
+
 // DetectVirtMode controls what type of virtualization to test for.
 type DetectVirtMode int
 
@@ -113,6 +123,10 @@ var (
 	// are not AMD64.
 	ErrNotAMD64Host = errors.New("not a AMD64 host")
 
+	// ErrNotARM64Host is returned from HostEnvironment.ARM64 on environments that
+	// are not ARM64.
+	ErrNotARM64Host = errors.New("not a ARM64 host")
+
 	// ErrNoKernelMSRSupport is returned from HostEnvironmentAMD64.ReadMSRs if there is
 	// no support for reading MSRs.
 	ErrNoKernelMSRSupport = errors.New("missing kernel support for reading MSRs")
@@ -142,4 +156,8 @@ type HostEnvironment interface {
 	// AMD64 returns an interface that can be used to mock some parts of an AMD64 platform.
 	// This will return ErrNotAMD64Host on non-AMD64 platforms.
 	AMD64() (HostEnvironmentAMD64, error)
+
+	// ARM64 returns an interface that can be used to mock some parts of an ARM64 platform.
+	// This will return ErrNotARM64Host on non-ARM64 platforms.
+	ARM64() (HostEnvironmentARM64, error)
 }

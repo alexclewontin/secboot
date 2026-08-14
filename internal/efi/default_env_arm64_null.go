@@ -1,9 +1,9 @@
-//go:build !amd64 && !arm64
+//go:build !arm64
 
 // -*- Mode: Go; indent-tabs-mode: t -*-
 
 /*
- * Copyright (C) 2024-2026 Canonical Ltd
+ * Copyright (C) 2026 Canonical Ltd
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 3 as
@@ -19,15 +19,9 @@
  *
  */
 
-package preinstall
+package efi
 
-import (
-	"fmt"
-	"runtime"
-
-	internal_efi "github.com/snapcore/secboot/internal/efi"
-)
-
-func isTPMDiscrete(env internal_efi.HostEnvironment) (bool, error) {
-	return false, &UnsupportedPlatformError{fmt.Errorf("checking for TPM discreteness is not implemented on %s", runtime.GOARCH)}
+// ARM64 implements [HostEnvironment.ARM64].
+func (defaultEnvImpl) ARM64() (HostEnvironmentARM64, error) {
+	return nil, ErrNotARM64Host
 }
