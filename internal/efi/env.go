@@ -140,6 +140,6 @@ type HostEnvironment interface {
 	EnumerateDevices(matcher netlink.Matcher) ([]SysfsDevice, error)
 
 	// AMD64 returns an interface that can be used to mock some parts of an AMD64 platform.
-	// This will return ErrNotAMD64CPU on non-AMD64 platforms.
+	// This will return ErrNotAMD64Host on non-AMD64 platforms.
 	AMD64() (HostEnvironmentAMD64, error)
 }
