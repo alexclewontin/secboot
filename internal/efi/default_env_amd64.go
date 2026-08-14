@@ -19,10 +19,10 @@
 
 package efi
 
-// This file remains restricted to amd64 by its filename because
-// github.com/canonical/cpuid does not compile on other architectures.
-// default_env_amd64_null.go supplies the stub AMD64() implementation for all
-// other architectures.
+// Unlike the ARM64 implementation (in default_env.go), this file remains
+// restricted to amd64 by its filename because github.com/canonical/cpuid does
+// not compile on other architectures. default_env_amd64_null.go supplies the
+// stub AMD64() implementation for all other architectures.
 
 import (
 	"encoding/binary"
