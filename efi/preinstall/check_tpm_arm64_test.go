@@ -62,6 +62,17 @@ func (s *tpmARM64Suite) TestIsTPMDiscreteOPTEE(c *C) {
 	}
 }
 
+func (s *tpmARM64Suite) TestIsTPMDiscreteDGXSpark(c *C) {
+	env := efitest.NewMockHostEnvironmentWithOpts(
+		efitest.WithARM64Environment("NVIDIA", "DGX Spark"),
+		efitest.WithSysfsDevices(makeArm64TPMDevice("tpm_crb")),
+	)
+
+	discrete, err := IsTPMDiscrete(env)
+	c.Check(err, IsNil)
+	c.Check(discrete, testutil.IsTrue)
+}
+
 func (s *tpmARM64Suite) TestIsTPMDiscreteUnsupportedSystemVendor(c *C) {
 	env := efitest.NewMockHostEnvironmentWithOpts(
 		efitest.WithARM64Environment("ACME", "Unknown"),

@@ -172,3 +172,14 @@ func (s *hostSecurityARM64Suite) TestCheckDiscreteTPMPartialResetAttackMitigatio
 	c.Check(err, IsNil)
 	c.Check(status, Equals, DtpmPartialResetAttackMitigationNotRequired)
 }
+
+func (s *hostSecurityARM64Suite) TestCheckDiscreteTPMPartialResetAttackMitigationStatusUnavailableForNvidiaDGXSpark(c *C) {
+	env := efitest.NewMockHostEnvironmentWithOpts(
+		efitest.WithARM64Environment("NVIDIA", "DGX Spark"),
+		efitest.WithSysfsDevices(makeArm64TPMDevice("tpm_crb")),
+	)
+
+	status, err := CheckDiscreteTPMPartialResetAttackMitigationStatus(env, makeArm64PCRResults(c))
+	c.Check(err, IsNil)
+	c.Check(status, Equals, DtpmPartialResetAttackMitigationUnavailable)
+}

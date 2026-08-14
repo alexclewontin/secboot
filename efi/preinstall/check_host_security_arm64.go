@@ -33,6 +33,8 @@ import (
 // integrity check. Tests replace this to supply synthetic platforms.
 var checkHostSecurityARM64Platform = func(env internal_efi.HostEnvironmentARM64, systemVendor string) (platformFirmwareIntegrityConfig, error) {
 	switch systemVendor {
+	case "NVIDIA":
+		return checkHostSecurityNVIDIA(env)
 	default:
 		return platformFirmwareIntegrityNone, &UnsupportedPlatformError{fmt.Errorf("unsupported system vendor: %s", systemVendor)}
 	}

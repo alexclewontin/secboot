@@ -51,6 +51,8 @@ func isTPMDiscrete(env internal_efi.HostEnvironment) (bool, error) {
 	}
 
 	switch systemVendor {
+	case "NVIDIA":
+		return isTPMDiscreteNvidia(arm64Env)
 	default:
 		return false, &UnsupportedPlatformError{fmt.Errorf("unsupported system vendor: %s", systemVendor)}
 	}
@@ -85,5 +87,21 @@ func isTPMFirmwareOptee(env internal_efi.HostEnvironment) (bool, error) {
 		return true, nil
 	default:
 		return false, nil
+	}
+}
+
+// isTPMDiscreteNvidia determines whether the default TPM is discrete on NVIDIA systems
+func isTPMDiscreteNvidia(env internal_efi.HostEnvironmentARM64) (bool, error) {
+	productName, err := env.ProductName()
+	if err != nil {
+		return false, &UnsupportedPlatformError{fmt.Errorf("cannot determine product name: %w", err)}
+	}
+
+	switch productName {
+	// We just happen to know that the NVIDIA DGX Spark has a dTPM
+	case nvidiaDGXSparkProductName:
+		return true, nil
+	default:
+		return false, &UnsupportedPlatformError{fmt.Errorf("unsupported NVIDIA product: %s", productName)}
 	}
 }
