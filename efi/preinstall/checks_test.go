@@ -124,7 +124,10 @@ func (s *runChecksSuite) testRunChecks(c *C, params *testRunChecksParams) (warni
 	c.Assert(dev.(*tpmDevice).TPMDevice, testutil.ConvertibleTo, &tpm2_testutil.TransportBackedDevice{})
 	c.Check(dev.(*tpmDevice).TPMDevice.(*tpm2_testutil.TransportBackedDevice).NumberOpen(), Equals, 0)
 
-	return result.Warnings.Unwrap(), nil
+	if result.Warnings != nil {
+		warnings = result.Warnings.Unwrap()
+	}
+	return warnings, nil
 }
 
 func (s *runChecksSuite) TestRunChecksGood(c *C) {
